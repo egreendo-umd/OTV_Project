@@ -1,8 +1,8 @@
 //Include the motor driver library
 // #include <AFMotor.h>
-
+#include <params.h>
+#include <pinLayout.h>
 //Set the speed of the motors
-#define Speed 160
 
 //Create objects for the motors
 // AF_DCMotor motorLeft(1);
@@ -24,7 +24,7 @@ void initNav() {
   int mode2 = False;
 }
 
-void loop() {
+void navMode1() {
   int centerSensor = sensorTwo();
   int leftSensor = sensorOne();
   int rightSensor = sensorThree();
@@ -38,10 +38,9 @@ void loop() {
 if (mode == 1) {
 
   int width = 0;
-  int pylon_width = 12;
   // Insert logic to detect pylon
   // Determine a way to measure width of objects based on sensor positions
-  if (width > pylon_width*2) { // Since the pylon will be the only object other than the walls, we can be very coarse in our measurements
+  if (width > PYLON_WIDTH*2) { // Since the pylon will be the only object other than the walls, we can be very coarse in our measurements
     // Determine azimuth
     // Navigate to center azimuth of measurement
   }
@@ -84,32 +83,36 @@ if (mode == 1) {
 
   continue;
 }
-
-// Obstacle Avoidance
-if (mode == 2) { 
-  if (8 >= centerSensor) {
-    Stop();
-    Serial.println("Stop");
-    delay(1000);
-    if (leftSensor > rightSensor) {
-      left();
-      Serial.println("Left");
-      delay(500);
-    } else {
-      right();
-      Serial.println("Right");
-      delay(500);
+}
+int navMode2() {
+  // Obstacle Avoidance
+  if (mode == 2) { 
+    if (8 >= centerSensor) {
+      Stop();
+      Serial.println("Stop");
+      delay(1000);
+      if (leftSensor > rightSensor) {
+        left();
+        Serial.println("Left");
+        delay(500);
+      } else {
+        right();
+        Serial.println("Right");
+        delay(500);
+      }
     }
   }
-}
-  Serial.println("Forward");
-  forward();
-  // Serial.print(leftSensor);
-  // Serial.print(", ");
-  // Serial.print(centerSensor);
-  // Serial.print(", ");
-  // Serial.print(rightSensor);
-  // Serial.print('\n');
+    Serial.println("Forward");
+    forward();
+    // Serial.print(leftSensor);
+    // Serial.print(", ");
+    // Serial.print(centerSensor);
+    // Serial.print(", ");
+    // Serial.print(rightSensor);
+    // Serial.print('\n');
+  }
+  return 1;
+
 }
 
 // Query OVS for position
