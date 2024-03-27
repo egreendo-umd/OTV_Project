@@ -7,3 +7,5 @@
 #define S1Echo A3
 #define S2Echo A4
 #define S3Echo A5
+
+//movement funcs pins here
