@@ -1,3 +1,7 @@
+// Include parameter and pin layout files
+#include <params.h>
+#include <pinLayout.h>
+
 // Initialize the Navigation System
 void initNav() {
   //Set the Trig pins as output pins
