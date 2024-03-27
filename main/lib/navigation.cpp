@@ -1,13 +1,8 @@
-//Include the motor driver library
-// #include <AFMotor.h>
+// Include parameter and pin layout files
 #include <params.h>
 #include <pinLayout.h>
-//Set the speed of the motors
 
-//Create objects for the motors
-// AF_DCMotor motorLeft(1);
-// AF_DCMotor motorRight(2);
-
+// Initialize the Navigation System
 void initNav() {
   //Set the Trig pins as output pins
   pinMode(S1Trig, OUTPUT);
@@ -20,69 +15,79 @@ void initNav() {
   //Set the speed of the motors
   // motorLeft.setSpeed(Speed);
   // motorRight.setSpeed(Speed);
-  int mode1 = True;
-  int mode2 = False;
+  int mode1 = true;
+  int mode2 = false;
+
 }
 
 void navMode1() {
-  int centerSensor = sensorTwo();
-  int leftSensor = sensorOne();
-  int rightSensor = sensorThree();
-// Check the distance using the IF condition
+  int i = 0, success = 0;
+  while (success == 0 && i < 10) {
+    // Reset the sensors for each loop
+    int centerSensor = sensorTwo();
+    int leftSensor = sensorOne();
+    int rightSensor = sensorThree();
 
-// Query the Overhead Vision System
-  int mode = 1; // queryOVS(); // queryOVS will probably be an int array return?
-
-// Detect and Navigate to Pylon
-
-if (mode == 1) {
-
-  int width = 0;
-  // Insert logic to detect pylon
-  // Determine a way to measure width of objects based on sensor positions
-  if (width > PYLON_WIDTH*2) { // Since the pylon will be the only object other than the walls, we can be very coarse in our measurements
-    // Determine azimuth
-    // Navigate to center azimuth of measurement
+    if ((centerSensor > 0 && leftSensor > 0 && rightSensor > 0) && 
+        (centerSensor < 200 && leftSensor < 200 && rightSensor < 200)) {
+      success = 1;
+    }
+    delay(100);
+    i++;
   }
-  // Insert logic to navigate to pylon, missile guidance may work?
+  // Check the distance using the IF condition
+  // Query the Overhead Vision System
+  int mode = 1; // queryOVS(); // queryOVS will probably be an int array return?
+  // Detect and Navigate to Pylon
+  if (mode == 1) {
 
-  if (8 >= centerSensor) {
-    Stop();
-    Serial.println("Stop");
-    // motorLeft.setSpeed(Speed/4);
-    // motorRight.setSpeed(Speed/4);
-    delay(500);
-    Serial.println("forward");
-    forward();
-    if (2 >= centerSensor) {
+    // Initialize measured object width
+    int width = 0;
+    // Insert logic to detect pylon
+    // Determine a way to measure width of objects based on sensor positions
+    if (width > 2*PYLON_WIDTH) { // Since the pylon will be the only object other than the walls, we can be very coarse in our measurements
+      // Determine azimuth
+      // Navigate to center azimuth of measurement
+    }
+    // Insert logic to navigate to pylon, missile guidance may work?
+
+    if (8 >= centerSensor) {
       Stop();
       Serial.println("Stop");
+      // motorLeft.setSpeed(Speed/4);
+      // motorRight.setSpeed(Speed/4);
+      delay(500);
+      Serial.println("forward");
+      forward();
+      if (2 >= centerSensor) {
+        Stop();
+        Serial.println("Stop");
 
-      int success = deployPayload(); // Will need to create deployPayload() function
+        int success = deployPayload(); // Will need to create deployPayload() function
 
-      if (success == True) {
-        reverse();
-        Serial.println("Reverse");
-      
-        if (8 >= centerSensor) {
-          Stop();
-          Serial.println("Stop");
-          int azimuth = queryOVS(); // If it's an array, extract just the azimuth
-          int targetAzimuth = 90;
-          // Adjust to face towards the end goal zone
-          while (5 <= abs(azimuth - targetAzimuth)) {
-            left();
-            delay(200);
-            
+        if (success == True) {
+          reverse();
+          Serial.println("Reverse");
+        
+          if (8 >= centerSensor) {
+            Stop();
+            Serial.println("Stop");
+            int azimuth = queryOVS(); // If it's an array, extract just the azimuth
+            int targetAzimuth = 90;
+            // Adjust to face towards the end goal zone
+            while (5 <= abs(azimuth - targetAzimuth)) {
+              left();
+              delay(200);
+              
+            }
           }
         }
+
       }
-
     }
-  }
 
-  continue;
-}
+    continue;
+  }
 }
 int navMode2() {
   // Obstacle Avoidance
