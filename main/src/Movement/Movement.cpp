@@ -1,7 +1,8 @@
-#include "Movement_funcs.h"
-#include "pinLayout.h"
+#include "Movement.h"
+#include "../pinLayout.h"
+#include "../params.h"
 
-Movement_funcs::Movement_funcs()
+Movement::Movement()
 {
     pinMode(N1, OUTPUT);
     pinMode(N2, OUTPUT);
@@ -12,7 +13,7 @@ Movement_funcs::Movement_funcs()
     stop();
 }
 
-void Movement_funcs::move(int setSpeed)
+void Movement::move(int setSpeed)
 {
     analogWrite(ENA, setSpeed);
     analogWrite(ENB, setSpeed);
@@ -22,7 +23,7 @@ void Movement_funcs::move(int setSpeed)
     digitalWrite(N4, in4);
 }
 
-void Movement_funcs::forward()
+void Movement::forward()
 {
     in1 = HIGH;
     in2 = LOW;
@@ -30,7 +31,7 @@ void Movement_funcs::forward()
     in4 = LOW;
 }
 
-void Movement_funcs::reverse()
+void Movement::reverse()
 {
     in1 = LOW;
     in2 = HIGH;
@@ -38,7 +39,7 @@ void Movement_funcs::reverse()
     in4 = HIGH;
 }
 
-void Movement_funcs::left()
+void Movement::left()
 {
     in1 = LOW;
     in2 = HIGH;
@@ -46,7 +47,7 @@ void Movement_funcs::left()
     in4 = LOW;
 }
 
-void Movement_funcs::turn90(bool direction)
+void Movement::turn90(bool direction)
 {
     direction? right(): left();
     move();

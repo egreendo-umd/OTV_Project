@@ -1,7 +1,7 @@
 #include "OVS.h"
 #include "Arduino.h"
-#include "params.h"
-#include "pinLayout.h"
+#include "../params.h"
+#include "../pinLayout.h"
 
 void initOVS() {
     delay(2000);

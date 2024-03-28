@@ -1,7 +1,7 @@
 #include "Navigation.h"
 #include "Arduino.h"
-#include "pinLayout.h"
-#include "params.h"
+#include "../pinLayout.h"
+#include "../params.h"
 
 // Initialize the Navigation System
 void Navigation::initNav() {

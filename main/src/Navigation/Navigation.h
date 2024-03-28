@@ -2,8 +2,8 @@
 #define Navigation_h
 #include "Arduino.h"
 
-#include "params.h"
-#include "pinLayout.h"
+#include "../params.h"
+#include "../pinLayout.h"
 
 class Navigation {
     public:
