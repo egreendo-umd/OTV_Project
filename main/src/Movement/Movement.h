@@ -26,5 +26,6 @@ public:
 
 private:
     int in1, in2, in3, in4;
-}
+};
+
 #endif

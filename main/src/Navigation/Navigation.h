@@ -16,6 +16,6 @@ class Navigation {
         int sensorOne();
         int sensorTwo();
         int sensorThree();
-}
+};
 
 #endif

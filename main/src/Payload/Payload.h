@@ -6,5 +6,9 @@
 #include "../pinLayout.h"
 
 // Implement header code here
+class Payload {
+    public:
+    private:
+};
 
 #endif
