@@ -12,20 +12,19 @@
 // #define ENA 1 //temp
 // #define ENB 2 //temp
 
-class Movement
-{
-public:
-    void move(int setSpeed);
-    void forward();
-    void reverse();
-    void left();
-    void right();
-    void turn90(bool direction); //left = 0, right = 1
-    void stop();
+class Movement {
+    public:
+        void move(int setSpeed);
+        void forward();
+        void reverse();
+        void left();
+        void right();
+        void turn90(bool direction); //left = 0, right = 1
+        void stop();
 
 
-private:
-    int in1, in2, in3, in4;
+    private:
+        int in1, in2, in3, in4;
 };
 
 #endif

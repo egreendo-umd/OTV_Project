@@ -7,11 +7,10 @@
 #include "../params.h"
 
 class OVS {
-    public {
+    public: {
         void begin();
         void updateLocation();
-    } private {
-
+    } private: {
     }
 };
 
