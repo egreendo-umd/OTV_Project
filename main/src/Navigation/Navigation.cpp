@@ -13,16 +13,14 @@ void Navigation::initNav() {
   pinMode(S1Echo, INPUT);
   pinMode(S2Echo, INPUT);
   pinMode(S3Echo, INPUT);
-  //Set the speed of the motors
-  // motorLeft.setSpeed(Speed);
-  // motorRight.setSpeed(Speed);
-  int mode1 = true;
-  int mode2 = false;
+
+  bool mode1 = true;
+  bool mode2 = false;
 
 }
 
 // Navigation to opposite Start area then measure object widths to locate pylon
-int Navigation::pylonSearch(int[] position) {
+int Navigation::pylonSearch(int position[]) {
   int i = 0, success = 0;
   while (success == 0 && i < 10) {
     // Reset the sensors for each loop
@@ -92,7 +90,7 @@ int Navigation::pylonSearch(int[] position) {
 }
 
 // Home in on payload once found through width measurement
-int Navigation::pylonHoming(int[] position) {
+int Navigation::pylonHoming(int position[]) {
   int i = 0, success = 0;
   while (success == 0 && i < 10) {
     // Reset the sensors for each loop
@@ -117,7 +115,7 @@ int Navigation::pylonHoming(int[] position) {
 }
 
 // Obstacle Avoidance to the Goal Zone (other end of Arena)
-int Navigation::obstacleAvoidance(int[] position) {
+int Navigation::obstacleAvoidance(int position[]) {
   int i = 0, success = 0;
   while (success == 0 && i < 10) {
     // Reset the sensors for each loop

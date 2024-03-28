@@ -12,39 +12,42 @@
 #define MODE_TWO_X 500 // centimeters
 #define MODE_TWO_Y 500 // centimeters
 
+Navigation nav;
+
 void setup() {
     Serial.begin(9600); // Start communications
 
-    Navigation.initNav(); // Initialize Navigation Pins and Variables
+    nav.initNav(); // Initialize Navigation Pins and Variables
 
 }
 
 void loop() {
-    int[3] position;
+    int position[3];
     int foundPylon;
 
     // Wifi Module OVS Position Query
     // position = OVS.queryOVS(); // Uncomment to use OVS
-    position = {200, 200, 90}; // Filler position to force Obstacle Avoidance {x (cm, y (cm), az (degrees))}
+    position[0] = 200; // Filler x position to force Obstacle Avoidance {x (cm, y (cm), az (degrees))}
+    position[1] = 200, 200; // Filler y position to force Obstacle Avoidance {x (cm, y (cm), az (degrees))}
+    position[2] = 90; // Filler az position to force Obstacle Avoidance {x (cm, y (cm), az (degrees))}
+
     Serial.print("Current position: ");
-    Serial.print(position);
-    Serial.print("\n");
+    Serial.println(position);
 
     // Determine if finding Payload or Avoiding Obstacles
     if (position[0] < MODE_ONE_X && position[1] < MODE_ONE_Y) 
     {
-        foundPylon = Navigation.pylonSearch(position); // Object width measurement
+        foundPylon = nav.pylonSearch(position); // Object width measurement
         if (foundPylon == 1) {
-            readyPayload = Navigation.pylonHoming(position); // Specific navigation to pylon and orientation for data extraction deployment
+            readyPayload = nav.pylonHoming(position); // Specific navigation to pylon and orientation for data extraction deployment
         }
     } 
     else if ((position[0] > MODE_ONE_X && position[1] > MODE_ONE_Y) &&
                 (position[0] < MODE_TWO_X && position[1] < MODE_TWO_Y)) 
     { 
-        Navigation.obstacleAvoidance(position);
+        nav.obstacleAvoidance(position);
     } else {
         Serial.print("There was an error in the position: ");
-        Serial.print(position);
-        Serial.print("\n");
+        Serial.println(position);
     }
 }
