@@ -1,6 +1,6 @@
 
-#ifndef MOVEMENT_FUNCS_H
-#define MOVEMENT_FUNCS_H
+#ifndef Movement_h
+#define Movement_h
 #include "Arduino.h"
 
 #define N1 6 // MAKE SURE PLEASE MAKE SURE THE PINS ARE GOING TO THE CORRECT MOTORS
@@ -10,7 +10,7 @@
 #define ENA 1 //temp
 #define ENB 2 //temp
 
-class Movement_funcs
+class Movement
 {
 public:
     void move(int setSpeed);

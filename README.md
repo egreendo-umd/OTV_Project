@@ -15,7 +15,10 @@ Overhead Vision System:
 
 Payload: 
 
-
+CI/CD:
+    - Using pre-made formats specific to Arduino
+    - https://github.com/arduino/compile-sketches#readme 
+    
 In case someone isn't familiar with the architecture format:
 
 Dividing by topic
