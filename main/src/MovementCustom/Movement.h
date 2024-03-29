@@ -1,8 +1,6 @@
 
 #ifndef Movement_h
 #define Movement_h
-#include "Arduino.h"
-#include "../ParamsCustom/pinLayout.h"
 
 class Movement {
 public:
@@ -18,7 +16,6 @@ public:
 private:
     bool in1, in2, in3, in4;
 };
-
-Movement move;
+extern Movement move;
 
 #endif

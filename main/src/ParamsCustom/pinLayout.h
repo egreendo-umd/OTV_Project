@@ -1,3 +1,5 @@
+#ifndef pinLayout_h
+#define pinLayout_h
 
 // Navigation Pins
 //Define the sensor pins
@@ -17,3 +19,5 @@
 #define ENB 2 //temp
 
 #define PAYLOAD 0
+
+#endif

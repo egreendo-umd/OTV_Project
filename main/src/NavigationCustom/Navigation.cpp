@@ -8,7 +8,7 @@
 #include "../PayloadCustom/Payload.h"
 
 // Initialize the Navigation System
-void Navigation::initNav() {
+Navigation::Navigation() {
   //Set the Trig pins as output pins
   pinMode(S1Trig, OUTPUT);
   pinMode(S2Trig, OUTPUT);
@@ -20,7 +20,6 @@ void Navigation::initNav() {
 
   bool mode1 = true;
   bool mode2 = false;
-
 }
 
 // Navigation to opposite Start area then measure object widths to locate pylon

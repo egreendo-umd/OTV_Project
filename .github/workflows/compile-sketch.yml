@@ -55,19 +55,6 @@ jobs:
           cp -r $GITHUB_WORKSPACE/main/src/NavigationCustom $GITHUB_WORKSPACE/NavigationCustom
           cp -r $GITHUB_WORKSPACE/main/src/PayloadCustom $GITHUB_WORKSPACE/PayloadCustom
           cp -r $GITHUB_WORKSPACE/main/src/ParamsCustom $GITHUB_WORKSPACE/ParamsCustom
-      
-      - name: Show current directory and contents
-        run: |
-          echo "Current working directory:"
-          pwd
-          echo "Listing contents of the current directory:"
-          ls -lah
-          echo "Listing contents of the src directory:"
-          ls -lah src/
-          echo "Listing contents of the GitHub workspace directory:"
-          ls -lah $GITHUB_WORKSPACE
-          echo "Listing contents of the Arduino libraries directory:"
-          ls -lah $HOME/Arduino/libraries/
 
         # For more information: https://github.com/arduino/compile-sketches#readme
       - name: Compile sketch

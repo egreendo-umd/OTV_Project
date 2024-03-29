@@ -1,13 +1,9 @@
 #ifndef Navigation_h
 #define Navigation_h
-#include "Arduino.h"
-
-#include "../ParamsCustom/params.h"
-#include "../ParamsCustom/pinLayout.h"
 
 class Navigation {
     public:
-        void initNav(void);
+        Navigation(); // Declare the constructor
         int pylonSearch(int position[]);
         int pylonHoming(int position[]);
         int obstacleAvoidance(int position[]);
@@ -19,6 +15,6 @@ class Navigation {
         bool mode2;
 };
 
-Navigation nav;
+extern Navigation nav;
 
 #endif

@@ -5,7 +5,7 @@
 #include "../ParamsCustom/pinLayout.h"
 
 // Implement code here
-void Payload::initPayload(void)
+Payload::Payload()
 {
     pinMode(PAYLOAD, OUTPUT);
     digitalWrite(PAYLOAD, LOW);
