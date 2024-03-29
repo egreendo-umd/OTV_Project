@@ -65,6 +65,7 @@ int Navigation::pylonSearch(int position[]) {
       // This functionality should be brought into main.ino
       int success = Payload.deployPayload(); // Will need to create deployPayload() function
 
+
       if (success == True) {
         Movement.reverse();
         Serial.println("Reverse");
