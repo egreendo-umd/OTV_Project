@@ -2,7 +2,7 @@
 #include "src/pinLayout.h"
 
 #include "src/Navigation/Navigation.h"
-#include "src/ENES100/src/ENES100.h"
+#include "src/ENES100/ENES100.h"
 #include "src/Movement/Movement.h"
 #include "src/Payload/Payload.h"
 
