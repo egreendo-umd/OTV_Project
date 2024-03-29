@@ -23,6 +23,8 @@ jobs:
   build:
     name: ${{ matrix.arduino-boards-fqbn }} - test compiling examples
     runs-on: ubuntu-latest
+    env:
+      GITHUB_RUNNER: 1
     defaults:
       run:
         working-directory: ./main
@@ -34,6 +36,7 @@ jobs:
         include:
           - arduino-boards-fqbn: arduino:avr:uno
             sketch-names: main.ino
+            build-properties: 'compiler.cpp.extra_flags=-DGITHUB_RUNNER'
           
       fail-fast: false
 
@@ -44,9 +47,6 @@ jobs:
 
       - name: Create Arduino library directory
         run: mkdir -p $HOME/Arduino/libraries
-
-      - name: Set up Environment for includes
-        run: echo "GITHUB_RUNNER=1" >> $GITHUB_ENV
 
       - name: Setup Arduino CLI
         uses: arduino/setup-arduino-cli@master
@@ -68,3 +68,4 @@ jobs:
         with:
           arduino-board-fqbn: ${{ matrix.arduino-boards-fqbn }}
           sketch-names: ${{ matrix.sketch-names }}
+          build-properties: ${{ matrix.build-properties }}
