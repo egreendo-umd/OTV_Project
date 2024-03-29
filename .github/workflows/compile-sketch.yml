@@ -51,13 +51,14 @@ jobs:
           cp -r ./main/src/Navigation $HOME/Arduino/libraries/Navigation
           cp -r ./main/src/Payload $HOME/Arduino/libraries/Payload
 
-      - name: Create symlinks for Libraries
+      - name: Replicate local directory structure for libraries
         run: |
-          ln -s $GITHUB_WORKSPACE/main/src/Movement $HOME/Arduino/libraries/Movement
-          ln -s $GITHUB_WORKSPACE/main/src/ENES100 $HOME/Arduino/libraries/ENES100
-          ln -s $GITHUB_WORKSPACE/main/src/Navigation $HOME/Arduino/libraries/Navigation
-          ln -s $GITHUB_WORKSPACE/main/src/Payload $HOME/Arduino/libraries/Payload
-          
+          mkdir -p $GITHUB_WORKSPACE/main/src
+          cp -r $GITHUB_WORKSPACE/main/src/Movement $GITHUB_WORKSPACE/main/src/Movement
+          cp -r $GITHUB_WORKSPACE/main/src/ENES100 $GITHUB_WORKSPACE/main/src/ENES100
+          cp -r $GITHUB_WORKSPACE/main/src/Navigation $GITHUB_WORKSPACE/main/src/Navigation
+          cp -r $GITHUB_WORKSPACE/main/src/Payload $GITHUB_WORKSPACE/main/src/Payload
+      
       # For more information: https://github.com/arduino/compile-sketches#readme
       - name: Compile sketch
         uses: ArminJo/arduino-test-compile@v3
