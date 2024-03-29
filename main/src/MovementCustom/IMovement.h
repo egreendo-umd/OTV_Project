@@ -3,6 +3,8 @@
 
 class IMovement {
 public:
+    virtual void move(int setSpeed) = 0;
+    virtual void turn90(bool direction) = 0;
     virtual void stop() = 0;
     virtual void forward() = 0;
     virtual void reverse() = 0;
