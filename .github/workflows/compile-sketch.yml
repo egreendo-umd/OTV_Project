@@ -29,5 +29,5 @@ jobs:
             # The name is specific to what is saved in each individual library's library.properties "name" parameter
             - name: Movement
             - name: Navigation
-            - name: OVS
+            - name: ENES100
             - name: Payload
