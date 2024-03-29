@@ -5,6 +5,7 @@
 
 // Remove this once the code is decoupled
 #include "../MovementCustom/Movement.h"
+#include "../PayloadCustom/Payload.h"
 
 // Initialize the Navigation System
 void Navigation::initNav() {
