@@ -11,8 +11,6 @@
 #include <Movement.h>
 #include <Payload.h>
 
-Navigation nav;
-
 void setup() {
     Serial.begin(9600); // Start communications
 
