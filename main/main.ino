@@ -1,10 +1,15 @@
 #include "src/params.h"
 #include "src/pinLayout.h"
 
-#include "src/NavigationCustom/Navigation.h"
-#include "src/ENES100Custom/ENES100.h"
-#include "src/MovementCustom/Movement.h"
-#include "src/PayloadCustom/Payload.h"
+// #include "src/NavigationCustom/Navigation.h"
+// #include "src/ENES100Custom/ENES100.h"
+// #include "src/MovementCustom/Movement.h"
+// #include "src/PayloadCustom/Payload.h"
+
+#include <Navigation.h>
+#include <ENES100.h>
+#include <Movement.h>
+#include <Payload.h>
 
 Navigation nav;
 
