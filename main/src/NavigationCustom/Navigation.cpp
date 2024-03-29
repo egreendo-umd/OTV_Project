@@ -1,6 +1,6 @@
 #include "Navigation.h"
-#include "../Movement/Movement.h"
-#include "../Payload/Payload.h"
+#include "../MovementCustom/Movement.h"
+#include "../PayloadCustom/Payload.h"
 #include "Arduino.h"
 #include "../pinLayout.h"
 #include "../params.h"
