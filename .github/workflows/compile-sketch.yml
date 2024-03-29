@@ -54,6 +54,17 @@ jobs:
           ln -s $GITHUB_WORKSPACE/main/src/Navigation $HOME/Arduino/libraries/Navigation
           ln -s $GITHUB_WORKSPACE/main/src/Payload $HOME/Arduino/libraries/Payload
 
+      - name: Show current directory and contents
+        run: |
+          echo "Current working directory:"
+          pwd
+          echo "Listing contents of the current directory:"
+          ls -lah
+          echo "Listing contents of the src directory:"
+          ls -lah src/
+          echo "Listing contents of the Arduino libraries directory:"
+          ls -lah $HOME/Arduino/libraries/
+
         # For more information: https://github.com/arduino/compile-sketches#readme
       - name: Compile sketch
         uses: ArminJo/arduino-test-compile@v3
