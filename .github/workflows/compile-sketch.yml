@@ -50,10 +50,10 @@ jobs:
 
       - name: Create symlinks for custom libraries
         run: |
-          ln -s $GITHUB_WORKSPACE/main/src/MovementCustom $HOME/Arduino/libraries/Movement
-          ln -s $GITHUB_WORKSPACE/main/src/ENES100Custom $HOME/Arduino/libraries/ENES100
-          ln -s $GITHUB_WORKSPACE/main/src/NavigationCustom $HOME/Arduino/libraries/Navigation
-          ln -s $GITHUB_WORKSPACE/main/src/PayloadCustom $HOME/Arduino/libraries/Payload
+          ln -s $GITHUB_WORKSPACE/main/src/MovementCustom $HOME/Arduino/libraries/MovementCustom
+          ln -s $GITHUB_WORKSPACE/main/src/ENES100Custom $HOME/Arduino/libraries/ENES100Custom
+          ln -s $GITHUB_WORKSPACE/main/src/NavigationCustom $HOME/Arduino/libraries/NavigationCustom
+          ln -s $GITHUB_WORKSPACE/main/src/PayloadCustom $HOME/Arduino/libraries/PayloadCustom
 
       - name: Show current directory and contents
         run: |
