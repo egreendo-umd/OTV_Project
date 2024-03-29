@@ -10,6 +10,4 @@ class Payload {
     private:
 };
 
-extern Payload payload;
-
 #endif

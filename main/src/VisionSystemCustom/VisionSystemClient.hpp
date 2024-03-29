@@ -84,6 +84,4 @@ void VisionSystemClient::println(T message) {
     mSerial->flush();
 }
 
-extern VisionSystemClient Enes100;
-
 #endif /* VisionSystemClient_hpp */

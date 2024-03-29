@@ -15,6 +15,4 @@ class Navigation {
         bool mode2;
 };
 
-extern Navigation nav;
-
 #endif
