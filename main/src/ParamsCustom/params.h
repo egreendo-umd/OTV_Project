@@ -7,6 +7,7 @@
 #include "../VisionSystemCustom/VisionSystemClient.hpp"
 #include "../MovementCustom/Movement.h"
 #include "../NavigationCustom/Navigation.h"
+#include "../PayloadCustom/Payload.h"
 
 // Declare all necessary objects
 VisionSystemClient Enes100;
