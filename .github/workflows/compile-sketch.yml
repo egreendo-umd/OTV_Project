@@ -43,7 +43,7 @@ jobs:
       - name: Setup Arduino CLI
         uses: arduino/setup-arduino-cli@master
 
-      - name: Creaet Arduino library directory
+      - name: Create Arduino library directory
         run: mkdir -p $HOME/Arduino/libraries
 
       - name: Install Libraries
@@ -58,5 +58,4 @@ jobs:
         uses: ArminJo/arduino-test-compile@v3
         with:
           arduino-board-fqbn: ${{ matrix.arduino-boards-fqbn }}
-          required-libraries: ${{ env.REQUIRED_LIBRARIES }}
           sketch-names: ${{ matrix.sketch-names }}
