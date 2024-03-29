@@ -3,12 +3,8 @@
 #include "../ParamsCustom/pinLayout.h"
 #include "../ParamsCustom/params.h"
 
-// Remove this once the code is decoupled
-#include "../MovementCustom/Movement.h"
-#include "../PayloadCustom/Payload.h"
-
 // Initialize the Navigation System
-Navigation::Navigation() {
+Navigation::Navigation(IMovement& movementController) : movement(movementController) {
   //Set the Trig pins as output pins
   pinMode(S1Trig, OUTPUT);
   pinMode(S2Trig, OUTPUT);
@@ -26,6 +22,7 @@ Navigation::Navigation() {
 int Navigation::pylonSearch(int position[]) {
   int i = 0, success = 0;
   int centerSensor, leftSensor, rightSensor;
+
   while (success == 0 && i < 10) {
     // Reset the sensors for each loop
     centerSensor = sensorTwo();
@@ -57,31 +54,31 @@ int Navigation::pylonSearch(int position[]) {
   // Insert logic to navigate to pylon, missile guidance may work?
 
   if (8 >= centerSensor) {
-    move.stop();
+    movement.stop();
     Serial.println("stop");
     // We may want to reduce speed here
     delay(500);
     Serial.println("forward");
-    move.forward();
+    movement.forward();
     if (2 >= centerSensor) {
-      move.stop();
+      movement.stop();
       Serial.println("stop");
 
       // This functionality should be brought into main.ino
-      int success = payload.deployPayload(); // Will need to create deployPayload() function
+      // int success = payload.deployPayload(); // Will need to create deployPayload() function
 
       if (success == true) {
-        move.reverse();
+        movement.reverse();
         Serial.println("Reverse");
       
         if (8 >= centerSensor) {
-          move.stop();
+          movement.stop();
           Serial.println("stop");
           int azimuth = position[2];
           int targetAzimuth = 90;
           // Adjust to face towards the end goal zone
           while (5 <= abs(azimuth - targetAzimuth)) {
-            move.left();
+            movement.left();
             delay(200);
           }
         }
@@ -95,6 +92,7 @@ int Navigation::pylonSearch(int position[]) {
 // Home in on payload once found through width measurement
 int Navigation::pylonHoming(int position[]) {
   int i = 0, success = 0;
+
   while (success == 0 && i < 10) {
     // Reset the sensors for each loop
     int centerSensor = sensorTwo();
@@ -141,21 +139,21 @@ int Navigation::obstacleAvoidance(int position[]) {
   // Current implementation is jerky, requiring stops and turns
   // We can upgrade this to flow smoothly by implementing PID or something similar
   if (8 >= centerSensor) {
-    move.stop();
+    movement.stop();
     Serial.println("stop");
     delay(1000);
     if (leftSensor > rightSensor) {
-      move.left();
+      movement.left();
       Serial.println("Left");
       delay(500);
     } else {
-      move.right();
+      movement.right();
       Serial.println("Right");
       delay(500);
     }
   }
   Serial.println("Forward");
-  move.forward();
+  movement.forward();
   return 1;
 }
 

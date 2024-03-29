@@ -2,16 +2,19 @@
 #ifndef Movement_h
 #define Movement_h
 
-class Movement {
+#include "IMovement.h"
+
+class Movement : public IMovement{
 public:
     Movement(); // Declare the constructor
-    void move(int setSpeed);
-    void forward();
-    void reverse();
-    void left();
-    void right();
-    void turn90(bool direction); //left = 0, right = 1
-    void stop();
+
+    void move(int setSpeed) override;
+    void forward() override;
+    void reverse() override;
+    void left() override;
+    void right() override;
+    void turn90(bool direction) override; //left = 0, right = 1
+    void stop() override;
 
 private:
     bool in1, in2, in3, in4;

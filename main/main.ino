@@ -11,8 +11,8 @@
 #include <Movement.h>
 #include <Payload.h>
 
-Navigation nav; // Initialize Navigation Pins and Variables
-Movement move; // Initialize Movement Pins and Variables
+Movement movement; // Initialize Movement Pins and Variables
+Navigation nav(movement); // Initialize Navigation Pins and Variables
 Payload payload; // Initialize Payload Pins and Variables
 VisionSystemClient Enes100; // Initialize Enes100 Vision System
 
