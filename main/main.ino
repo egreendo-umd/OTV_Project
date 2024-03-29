@@ -1,18 +1,21 @@
-// #include <params.h>
-// #include <pinLayout.h>
-// #include <Navigation.h>
-// #include <VisionSystemClient.hpp>
-// #include <Movement.h>
-// #include <Payload.h>
-
-// Comment above and uncomment below for OTV Loadin
-
+#ifndef GITHUB_RUNNER
+// If running locally, use the following includes for src libraries
 #include "src/ParamsCustom/params.h"
 #include "src/ParamsCustom/pinLayout.h"
 #include "src/NavigationCustom/Navigation.h"
-#include "src/ENES100Custom/ENES100.h"
+#include "src/VisionSystemCustom/VisionSystemClient.hpp"
 #include "src/MovementCustom/Movement.h"
 #include "src/PayloadCustom/Payload.h"
+#else
+// If running in Github Actions, use the following includes
+#include <params.h>
+#include <pinLayout.h>
+#include <Navigation.h>
+#include <VisionSystemClient.hpp>
+#include <Movement.h>
+#include <Payload.h>
+#endif
+
 
 
 

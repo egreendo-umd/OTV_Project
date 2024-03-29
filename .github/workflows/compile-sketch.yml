@@ -45,6 +45,9 @@ jobs:
       - name: Create Arduino library directory
         run: mkdir -p $HOME/Arduino/libraries
 
+      - name: Set up Environment for includes
+        run: echo "GITHUB_RUNNER=1" >> $GITHUB_ENV
+
       - name: Setup Arduino CLI
         uses: arduino/setup-arduino-cli@master
 
