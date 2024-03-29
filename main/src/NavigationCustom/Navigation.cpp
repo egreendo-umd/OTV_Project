@@ -3,6 +3,9 @@
 #include "../ParamsCustom/pinLayout.h"
 #include "../ParamsCustom/params.h"
 
+// Remove this once the code is decoupled
+#include "../MovementCustom/Movement.h"
+
 // Initialize the Navigation System
 void Navigation::initNav() {
   //Set the Trig pins as output pins
