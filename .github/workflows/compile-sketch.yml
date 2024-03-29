@@ -42,11 +42,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Create Arduino library directory
+        run: mkdir -p $HOME/Arduino/libraries
+
       - name: Setup Arduino CLI
         uses: arduino/setup-arduino-cli@master
-
-      # - name: Create Arduino library directory
-      #   run: mkdir -p $HOME/Arduino/libraries
 
       # - name: Create symlinks for custom libraries
       #   run: |
