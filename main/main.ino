@@ -1,15 +1,20 @@
 #include <params.h>
 #include <pinLayout.h>
+#include <Navigation.h>
+#include <VisionSystemClient.hpp>
+#include <Movement.h>
+#include <Payload.h>
 
+// Comment above and uncomment below for OTV Loadin
+
+// #include "src/ParamsCustom/params.h"
+// #include "src/PinLayoutCustom/pinLayout.h"
 // #include "src/NavigationCustom/Navigation.h"
 // #include "src/ENES100Custom/ENES100.h"
 // #include "src/MovementCustom/Movement.h"
 // #include "src/PayloadCustom/Payload.h"
 
-#include <Navigation.h>
-#include <VisionSystemClient.hpp>
-#include <Movement.h>
-#include <Payload.h>
+
 
 Movement movement; // Initialize Movement Pins and Variables
 Navigation nav(movement); // Initialize Navigation Pins and Variables
