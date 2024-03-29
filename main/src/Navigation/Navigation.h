@@ -11,7 +11,6 @@ class Navigation {
         int pylonSearch(int position[]);
         int pylonHoming(int position[]);
         int obstacleAvoidance(int position[]);
-        int parseOVS();
     private:
         int sensorOne();
         int sensorTwo();

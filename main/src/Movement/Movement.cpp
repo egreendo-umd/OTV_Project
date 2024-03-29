@@ -10,7 +10,7 @@ Movement::Movement()
     pinMode(N4, OUTPUT);
     pinMode(ENA, OUTPUT);
     pinMode(ENB, OUTPUT);
-    stop();
+    this->stop();
 }
 
 void Movement::move(int setSpeed)
@@ -23,48 +23,47 @@ void Movement::move(int setSpeed)
     digitalWrite(N4, in4);
 }
 
-void Movement::forward()
-{
+void Movement::forward() {
     in1 = HIGH;
     in2 = LOW;
     in3 = HIGH;
     in4 = LOW;
+    move(255); // Assuming a default speed for forward
 }
 
-void Movement::reverse()
-{
+void Movement::reverse() {
     in1 = LOW;
     in2 = HIGH;
     in3 = LOW;
     in4 = HIGH;
+    move(255); // Assuming a default speed for reverse
 }
 
-void Movement::left()
-{
+void Movement::left() {
     in1 = LOW;
     in2 = HIGH;
     in3 = HIGH;
     in4 = LOW;
+    move(255); // Assuming a default speed for left turn
+}
+
+void Movement::right() {
+    in1 = HIGH;
+    in2 = LOW;
+    in3 = LOW;
+    in4 = HIGH;
+    move(255); // Assuming a default speed for right turn
 }
 
 void Movement::turn90(bool direction)
 {
     direction? right(): left();
-    move();
-    delay(1000) //placeholder value;
+    move(255); // Assuming a default speed for turning
+    delay(1000); //placeholder value;
     stop();
 }
 
-void right()
-{
-    in1 = HIGH;
-    in2 = LOW;
-    in3 = LOW;
-    in4 = HIGH;
-}
-
-void stop()
-{
+void Movement::stop() {
     digitalWrite(N1, LOW);
     digitalWrite(N2, LOW);
     digitalWrite(N3, LOW);

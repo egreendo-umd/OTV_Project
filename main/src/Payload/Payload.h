@@ -8,6 +8,9 @@
 // Implement header code here
 class Payload {
     public:
+        void initPayload(void);
+        int deployPayload(void);
+        void collectPayload(void);
     private:
 };
 

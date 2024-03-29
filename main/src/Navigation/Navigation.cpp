@@ -1,7 +1,12 @@
 #include "Navigation.h"
+#include "../Movement/Movement.h"
+#include "../Payload/Payload.h"
+#include "Arduino.h"
 #include "../pinLayout.h"
 #include "../params.h"
 
+Movement move;
+Payload payload;
 // Initialize the Navigation System
 void Navigation::initNav() {
   //Set the Trig pins as output pins
@@ -21,11 +26,12 @@ void Navigation::initNav() {
 // Navigation to opposite Start area then measure object widths to locate pylon
 int Navigation::pylonSearch(int position[]) {
   int i = 0, success = 0;
+  int centerSensor, leftSensor, rightSensor;
   while (success == 0 && i < 10) {
     // Reset the sensors for each loop
-    int centerSensor = sensorTwo();
-    int leftSensor = sensorOne();
-    int rightSensor = sensorThree();
+    centerSensor = sensorTwo();
+    leftSensor = sensorOne();
+    rightSensor = sensorThree();
 
     if ((centerSensor > 0 && leftSensor > 0 && rightSensor > 0) && 
         (centerSensor < 200 && leftSensor < 200 && rightSensor < 200)) {
@@ -44,40 +50,39 @@ int Navigation::pylonSearch(int position[]) {
   int width = 0, payloadFound = 0;
   // Insert logic to detect pylon
   // Determine a way to measure width of objects based on sensor positions
-  if (width > 2*PYLON_WIDTH) { // Since the pylon will be the only object other than the walls, we can be very coarse in our measurements
-    // Determine azimuth
-    payloadFound = 1;
-    // Navigate to center azimuth of measurement
-  }
+  // if (width > 2*PYLON_WIDTH) { // Since the pylon will be the only object other than the walls, we can be very coarse in our measurements
+  //   // Determine azimuth
+  //   payloadFound = 1;
+  //   // Navigate to center azimuth of measurement
+  // }
   // Insert logic to navigate to pylon, missile guidance may work?
 
   if (8 >= centerSensor) {
-    Movement.Stop();
-    Serial.println("Stop");
+    move.stop();
+    Serial.println("stop");
     // We may want to reduce speed here
     delay(500);
     Serial.println("forward");
-    Movement.forward();
+    move.forward();
     if (2 >= centerSensor) {
-      Movement.Stop();
-      Serial.println("Stop");
+      move.stop();
+      Serial.println("stop");
 
       // This functionality should be brought into main.ino
-      int success = Payload.deployPayload(); // Will need to create deployPayload() function
+      int success = payload.deployPayload(); // Will need to create deployPayload() function
 
-
-      if (success == True) {
-        Movement.reverse();
+      if (success == true) {
+        move.reverse();
         Serial.println("Reverse");
       
         if (8 >= centerSensor) {
-          Movement.Stop();
-          Serial.println("Stop");
-          int azimuth = queryOVS(); // If it's an array, extract just the azimuth
+          move.stop();
+          Serial.println("stop");
+          int azimuth = position[2];
           int targetAzimuth = 90;
           // Adjust to face towards the end goal zone
           while (5 <= abs(azimuth - targetAzimuth)) {
-            Movement.left();
+            move.left();
             delay(200);
           }
         }
@@ -85,7 +90,6 @@ int Navigation::pylonSearch(int position[]) {
 
       }
     }
-  }
   return 1;
 }
 
@@ -117,11 +121,12 @@ int Navigation::pylonHoming(int position[]) {
 // Obstacle Avoidance to the Goal Zone (other end of Arena)
 int Navigation::obstacleAvoidance(int position[]) {
   int i = 0, success = 0;
+  int centerSensor, leftSensor, rightSensor;
   while (success == 0 && i < 10) {
     // Reset the sensors for each loop
-    int centerSensor = sensorTwo();
-    int leftSensor = sensorOne();
-    int rightSensor = sensorThree();
+    centerSensor = sensorTwo();
+    leftSensor = sensorOne();
+    rightSensor = sensorThree();
 
     if ((centerSensor > 0 && leftSensor > 0 && rightSensor > 0) && 
         (centerSensor < 200 && leftSensor < 200 && rightSensor < 200)) {
@@ -136,44 +141,23 @@ int Navigation::obstacleAvoidance(int position[]) {
   }
   // Current implementation is jerky, requiring stops and turns
   // We can upgrade this to flow smoothly by implementing PID or something similar
-  if (mode == 2) { 
-    if (8 >= centerSensor) {
-      Movement.Stop();
-      Serial.println("Stop");
-      delay(1000);
-      if (leftSensor > rightSensor) {
-        Movement.left();
-        Serial.println("Left");
-        delay(500);
-      } else {
-        Movement.right();
-        Serial.println("Right");
-        delay(500);
-      }
+  if (8 >= centerSensor) {
+    move.stop();
+    Serial.println("stop");
+    delay(1000);
+    if (leftSensor > rightSensor) {
+      move.left();
+      Serial.println("Left");
+      delay(500);
+    } else {
+      move.right();
+      Serial.println("Right");
+      delay(500);
     }
   }
-    Serial.println("Forward");
-    Movement.forward();
-  }
+  Serial.println("Forward");
+  move.forward();
   return 1;
-
-}
-
-// Query and Parse OVS for position
-// With how main.ino is being organized, this may be unnecessary
-int Navigation::parseOVS() {
-  int x, y, az, mode;
-  int[3] position = {0, 0, 0};
-
-  // Implement logic to query OVS through the ESP32 WiFi Modem in OVS library
-  position = OVS.queryOVS(); //int[] position = {150, 50};
-
-  if (position[0] < 100) {
-    mode = 1;
-  } else {
-    mode = 2;
-  }
-  return mode;
 }
 
 //Get the sensor values
