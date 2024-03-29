@@ -14,7 +14,10 @@
 void setup() {
     Serial.begin(9600); // Start communications
 
-    nav.initNav(); // Initialize Navigation Pins and Variables
+    Navigation nav; // Initialize Navigation Pins and Variables
+    Movement move; // Initialize Movement Pins and Variables
+    Payload payload; // Initialize Payload Pins and Variables
+    VisionSystemClient Enes100; // Initialize Enes100 Vision System
     // Initialize Enes100 Library
     Enes100.begin("B-Team", DATA, 205, 3, 2);
     Serial.println("ENES100 initialized");
