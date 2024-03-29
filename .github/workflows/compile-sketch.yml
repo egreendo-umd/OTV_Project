@@ -40,6 +40,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup Arduino CLI
+        uses: arduino/setup-arduino-cli@master
+
       - name: Install Libraries
         run: |
           cp -r ./main/src/Movement $HOME/Arduino/libraries/Movement
