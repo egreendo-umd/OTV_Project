@@ -43,6 +43,9 @@ jobs:
       - name: Setup Arduino CLI
         uses: arduino/setup-arduino-cli@master
 
+      - name: Creaet Arduino library directory
+        run: mkdir -p $HOME/Arduino/libraries
+
       - name: Install Libraries
         run: |
           cp -r ./main/src/Movement $HOME/Arduino/libraries/Movement
