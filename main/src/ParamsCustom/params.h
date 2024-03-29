@@ -3,18 +3,6 @@
 
 // File to store and manage parameters that may be used by multiple functions/files
 
-// Include all necessary libraries
-#include "../VisionSystemCustom/VisionSystemClient.hpp"
-#include "../MovementCustom/Movement.h"
-#include "../NavigationCustom/Navigation.h"
-#include "../PayloadCustom/Payload.h"
-
-// Declare all necessary objects
-VisionSystemClient Enes100;
-Movement move;
-Navigation nav;
-Payload payload;
-
 // Payload and Mission Parameters
 #define PYLON_WIDTH 12;
 

@@ -19,4 +19,6 @@ class Navigation {
         bool mode2;
 };
 
+Navigation nav;
+
 #endif

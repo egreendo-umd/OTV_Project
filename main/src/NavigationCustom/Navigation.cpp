@@ -1,12 +1,8 @@
 #include "Navigation.h"
-#include "../MovementCustom/Movement.h"
-#include "../PayloadCustom/Payload.h"
 #include "Arduino.h"
 #include "../ParamsCustom/pinLayout.h"
 #include "../ParamsCustom/params.h"
 
-Movement move;
-Payload payload;
 // Initialize the Navigation System
 void Navigation::initNav() {
   //Set the Trig pins as output pins

@@ -14,4 +14,6 @@ class Payload {
     private:
 };
 
+Payload payload;
+
 #endif

@@ -19,4 +19,6 @@ private:
     bool in1, in2, in3, in4;
 };
 
+Movement move;
+
 #endif
