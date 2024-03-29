@@ -1,13 +1,39 @@
 name: Compile Sketch
 
-# The workflow will run on every push and pull request to the repository
+# The workflow will run on push and pull requests to the repository
 on:
-  - push
-  - pull_request
+  push:
+    branches:
+      - main
+    paths:
+      - '**.ino'
+      - '**.cpp'
+      - '**.h'
+      - '.github/workflows/*.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**.ino'
+      - '**.cpp'
+      - '**.h'
 
 jobs:
-  compile-sketch:
+  build:
+    name: ${{ matrix.arduino-boards-fqbn }} - test compiling examples
     runs-on: ubuntu-latest
+    env:
+      REQUIRED_LIBRARIES: Movement,Navigation,ENES100,Payload
+    strategy:
+      matrix:
+        arduino-boards-fqbn: 
+          - arduino:avr:uno
+    
+        include:
+          - arduino-boards-fqbn: arduino:avr:uno
+            sketch-names: main.ino
+          
+      fail-fast: false
 
     steps:
       # This step makes the contents of the repository available to the workflow
@@ -16,18 +42,8 @@ jobs:
 
       # For more information: https://github.com/arduino/compile-sketches#readme
       - name: Compile sketch
-        uses: arduino/compile-sketches@v1
+        uses: ArminJo/arduino-test-compile@v3
         with:
-          #Since we're just using an Uno, specifying fqbn is just being verbose
-          fqbn: "arduino:avr:uno"
-          # The default is to compile for the Arduino Uno board. If you want to compile for other boards, use the `fqbn` input.
-          sketch-paths: |
-            # Configure the action to search all folders under the root of the repository for sketches and compile them.
-            # This is formatted as a YAML list, which makes it possible to have multiple sketch paths if needed.
-            - ./
-          libraries: |
-            # The name is specific to what is saved in each individual library's library.properties "name" parameter
-            - name: Movement
-            - name: Navigation
-            - name: ENES100
-            - name: Payload
+          arduino-board-fqbn: ${{ matrix.arduino-boards-fqbn }}
+          required-libraries: ${{ env.REQUIRED_LIBRARIES }}
+          sketch-names: ${{ matrix.sketch-names }}
