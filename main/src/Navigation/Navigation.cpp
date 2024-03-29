@@ -1,5 +1,4 @@
 #include "Navigation.h"
-#include "Arduino.h"
 #include "../pinLayout.h"
 #include "../params.h"
 

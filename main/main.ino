@@ -1,6 +1,6 @@
+#include "src/ENES100ArduinoLibrary-master/src/Enes100.h"
 #include "src/params.h"
 #include "src/pinLayout.h"
-
 #include "src/Navigation/Navigation.h"
 #include "src/OVS/OVS.h"
 #include "src/Movement/Movement.h"
@@ -15,7 +15,9 @@
 Navigation nav;
 
 void setup() {
-    Serial.begin(9600); // Start communications
+    Enes100.begin("B-Team", DATA, int markerId, int wifiModuleTX, int wifiModuleRX) //TODO: Update with unkown values
+
+    //Serial.begin(9600); // Start communications
 
     nav.initNav(); // Initialize Navigation Pins and Variables
 
