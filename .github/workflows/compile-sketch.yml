@@ -48,12 +48,12 @@ jobs:
       - name: Setup Arduino CLI
         uses: arduino/setup-arduino-cli@master
 
-      # - name: Create symlinks for custom libraries
-      #   run: |
-      #     ln -s $GITHUB_WORKSPACE/main/src/MovementCustom $HOME/Arduino/libraries/MovementCustom
-      #     ln -s $GITHUB_WORKSPACE/main/src/ENES100Custom $HOME/Arduino/libraries/ENES100Custom
-      #     ln -s $GITHUB_WORKSPACE/main/src/NavigationCustom $HOME/Arduino/libraries/NavigationCustom
-      #     ln -s $GITHUB_WORKSPACE/main/src/PayloadCustom $HOME/Arduino/libraries/PayloadCustom
+      - name: Create symlinks for custom libraries
+        run: |
+          ln -s $GITHUB_WORKSPACE/main/src/MovementCustom $HOME/Arduino/libraries/MovementCustom
+          ln -s $GITHUB_WORKSPACE/main/src/ENES100Custom $HOME/Arduino/libraries/ENES100Custom
+          ln -s $GITHUB_WORKSPACE/main/src/NavigationCustom $HOME/Arduino/libraries/NavigationCustom
+          ln -s $GITHUB_WORKSPACE/main/src/PayloadCustom $HOME/Arduino/libraries/PayloadCustom
 
       - name: Show current directory and contents
         run: |
