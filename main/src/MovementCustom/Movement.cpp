@@ -1,6 +1,6 @@
 #include "Movement.h"
-#include "../pinLayout.h"
-#include "../params.h"
+#include "../ParamsCustom/pinLayout.h"
+#include "../ParamsCustom/params.h"
 
 Movement::Movement()
 {

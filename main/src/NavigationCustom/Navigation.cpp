@@ -2,8 +2,8 @@
 #include "../MovementCustom/Movement.h"
 #include "../PayloadCustom/Payload.h"
 #include "Arduino.h"
-#include "../pinLayout.h"
-#include "../params.h"
+#include "../ParamsCustom/pinLayout.h"
+#include "../ParamsCustom/params.h"
 
 Movement move;
 Payload payload;

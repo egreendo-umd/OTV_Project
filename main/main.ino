@@ -1,5 +1,5 @@
-#include "src/params.h"
-#include "src/pinLayout.h"
+#include <params.h>
+#include <pinLayout.h>
 
 // #include "src/NavigationCustom/Navigation.h"
 // #include "src/ENES100Custom/ENES100.h"

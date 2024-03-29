@@ -1,8 +1,8 @@
 #include "Payload.h"
 #include "Arduino.h"
 
-#include "../params.h"
-#include "../pinLayout.h"
+#include "../ParamsCustom/params.h"
+#include "../ParamsCustom/pinLayout.h"
 
 // Implement code here
 void Payload::initPayload(void)

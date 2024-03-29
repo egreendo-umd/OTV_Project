@@ -54,6 +54,7 @@ jobs:
           cp -r $GITHUB_WORKSPACE/main/src/ENES100Custom $GITHUB_WORKSPACE/ENES100Custom
           cp -r $GITHUB_WORKSPACE/main/src/NavigationCustom $GITHUB_WORKSPACE/NavigationCustom
           cp -r $GITHUB_WORKSPACE/main/src/PayloadCustom $GITHUB_WORKSPACE/PayloadCustom
+          cp -r $GITHUB_WORKSPACE/main/src/ParamsCustom $GITHUB_WORKSPACE/ParamsCustom
       
       - name: Show current directory and contents
         run: |
