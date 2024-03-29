@@ -51,7 +51,7 @@ jobs:
       - name: Copy Custom Libraries to work directory
         run: |
           cp -r $GITHUB_WORKSPACE/main/src/MovementCustom $GITHUB_WORKSPACE/MovementCustom
-          cp -r $GITHUB_WORKSPACE/main/src/ENES100Custom $GITHUB_WORKSPACE/ENES100Custom
+          cp -r $GITHUB_WORKSPACE/main/src/VisionSystemCustomo $GITHUB_WORKSPACE/VisionSystemCustom
           cp -r $GITHUB_WORKSPACE/main/src/NavigationCustom $GITHUB_WORKSPACE/NavigationCustom
           cp -r $GITHUB_WORKSPACE/main/src/PayloadCustom $GITHUB_WORKSPACE/PayloadCustom
           cp -r $GITHUB_WORKSPACE/main/src/ParamsCustom $GITHUB_WORKSPACE/ParamsCustom

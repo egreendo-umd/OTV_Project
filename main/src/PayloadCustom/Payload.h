@@ -2,8 +2,8 @@
 #define Payload_h
 #include "Arduino.h"
 
-#include "../params.h"
-#include "../pinLayout.h"
+#include "../ParamsCustom/params.h"
+#include "../ParamsCustom/pinLayout.h"
 
 // Implement header code here
 class Payload {
