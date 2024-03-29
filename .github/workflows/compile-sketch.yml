@@ -36,7 +36,7 @@ jobs:
         include:
           - arduino-boards-fqbn: arduino:avr:uno
             sketch-names: main.ino
-            build-properties: 'compiler.cpp.extra_flags=-DGITHUB_RUNNER'
+            build-properties: compiler.cpp.extra_flags=-DGITHUB_RUNNER
           
       fail-fast: false
 
