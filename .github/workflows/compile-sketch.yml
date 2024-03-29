@@ -56,6 +56,9 @@ jobs:
           cp -r $GITHUB_WORKSPACE/main/src/PayloadCustom $GITHUB_WORKSPACE/PayloadCustom
           cp -r $GITHUB_WORKSPACE/main/src/ParamsCustom $GITHUB_WORKSPACE/ParamsCustom
 
+      - name: Remove src file libraries
+        run: rm -rf $GITHUB_WORKSPACE/main/src
+
         # For more information: https://github.com/arduino/compile-sketches#readme
       - name: Compile sketch
         uses: ArminJo/arduino-test-compile@v3
