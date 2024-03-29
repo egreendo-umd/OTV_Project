@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ${{ github.workspace }}/main
+        working-directory: ./main
     strategy:
       matrix:
         arduino-boards-fqbn: 
