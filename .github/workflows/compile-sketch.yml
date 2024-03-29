@@ -40,6 +40,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install Libraries
+        run: |
+          cp -r ./src/Movement $HOME/Arduino/libraries/Movement
+          cp -r ./src/ENES100 $HOME/Arduino/libraries/ENES100
+          cp -r ./src/Navigation $HOME/Arduino/libraries/Navigation
+          cp -r ./src/Payload $HOME/Arduino/libraries/Payload
+
       # For more information: https://github.com/arduino/compile-sketches#readme
       - name: Compile sketch
         uses: ArminJo/arduino-test-compile@v3
