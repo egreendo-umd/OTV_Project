@@ -48,6 +48,9 @@ jobs:
       - name: Create Arduino library directory
         run: mkdir -p $HOME/Arduino/libraries
 
+      - name: Ensure GITHUB_RUNNER is set
+        run: echo "GITHUB_RUNNER=1" >> $GITHUB_ENV
+
       - name: Setup Arduino CLI
         uses: arduino/setup-arduino-cli@master
 
@@ -68,4 +71,4 @@ jobs:
         with:
           arduino-board-fqbn: ${{ matrix.arduino-boards-fqbn }}
           sketch-names: ${{ matrix.sketch-names }}
-          build-properties: ${{ matrix.build-properties }}
+          extra-arduino-cli-args: --build-property ${{ matrix.build-properties }}
