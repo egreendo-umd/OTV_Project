@@ -1,7 +1,5 @@
 #include "Navigation.h"
 #include "Arduino.h"
-// #include <cmath>
-// #include <vector>
 #include "../ParamsCustom/pinLayout.h"
 #include "../ParamsCustom/params.h"
 
@@ -286,7 +284,8 @@ void Navigation::moveForwardSetDistance(double speed, double distance) {
             return;
         }
 
-        movement.forward(speed); // Assuming forward() can take speed as an argument
+        movement.forward(); // set forward direction
+        movement.move(speed); // set speed
         delay(100); // Small delay to allow sensor reading update, adjust as necessary
     }
 

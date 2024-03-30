@@ -3,13 +3,13 @@
 
 class IMovement {
 public:
-    virtual void move(int setSpeed) = 0;
-    virtual void turn90(bool direction) = 0;
-    virtual void stop() = 0;
-    virtual void forward() = 0;
-    virtual void reverse() = 0;
-    virtual void left() = 0;
-    virtual void right() = 0;
+    virtual void move(int setSpeed);
+    virtual void turn(int angle);
+    virtual void stop();
+    virtual void forward();
+    virtual void reverse();
+    virtual void left();
+    virtual void right();
     virtual ~IMovement() {} // Include a virtual destructor
 };
 

@@ -13,7 +13,7 @@ public:
     void reverse() override;
     void left() override;
     void right() override;
-    void turn90(bool direction) override; //left = 0, right = 1
+    void turn(int angle) override; //left = 0, right = 1
     void stop() override;
 
 private:

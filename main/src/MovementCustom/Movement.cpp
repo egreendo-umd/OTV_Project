@@ -29,7 +29,7 @@ void Movement::forward() {
     in2 = LOW;
     in3 = HIGH;
     in4 = LOW;
-    move(255); // Assuming a default speed for forward
+    //move(255); // Assuming a default speed for forward
 }
 
 void Movement::reverse() {
@@ -37,7 +37,7 @@ void Movement::reverse() {
     in2 = HIGH;
     in3 = LOW;
     in4 = HIGH;
-    move(255); // Assuming a default speed for reverse
+    //move(255); // Assuming a default speed for reverse
 }
 
 void Movement::left() {
@@ -45,7 +45,7 @@ void Movement::left() {
     in2 = HIGH;
     in3 = HIGH;
     in4 = LOW;
-    move(255); // Assuming a default speed for left turn
+    //move(255); // Assuming a default speed for left turn
 }
 
 void Movement::right() {
@@ -53,14 +53,21 @@ void Movement::right() {
     in2 = LOW;
     in3 = LOW;
     in4 = HIGH;
-    move(255); // Assuming a default speed for right turn
+    //move(255); // Assuming a default speed for right turn
 }
 
-void Movement::turn90(bool direction)
-{
-    direction? right(): left();
-    move(255); // Assuming a default speed for turning
-    delay(1000); //placeholder value;
+void Movement::turn(int angle) {
+    int setSpeed = SPEED; // Maximum speed for turning
+    int turnDuration = map(abs(angle), 0, 360, 0, SPIN_TIME); // Map angle to time (adjust 2000 as needed)
+
+    if (angle > 0) {
+        right();
+    } else {
+        left();
+    }
+
+    move(setSpeed);
+    delay(turnDuration); // turn for a time proportional to the angle
     stop();
 }
 
