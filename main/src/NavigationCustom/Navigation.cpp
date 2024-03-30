@@ -226,7 +226,7 @@ Navigation::SensorReadings Navigation::calibrateSensors() {
   SensorReadings readings = initializeSensors();
   if (!readings.success) {
       Serial.println("Failed to initialize sensors. Exiting...");
-      return ScanResult{0, 0, 0, false};  // or handle the failure appropriately
+      return readings;  // or handle the failure appropriately
   }
 
   // Figure out how to calibrate the sensors
