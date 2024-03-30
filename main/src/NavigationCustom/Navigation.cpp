@@ -340,12 +340,12 @@ Navigation::ScanResult Navigation::scanAndCalculateWidth(int position[]) {
       measurements[idx] = scanReading;
       azimuths[idx] = angle;
 
-      turn(SCAN_ANGLE / SCAN_SECTORS);  // Incremental scanning step
+      movement.turn(SCAN_ANGLE / SCAN_SECTORS);  // Incremental scanning step
       idx++;
     }
 
     // Return to initial position
-    turn(-SCAN_ANGLE/2);
+    movement.turn(-SCAN_ANGLE/2);
 
     double leftEdgeAzimuth = 0;
     double rightEdgeAzimuth = 0;
