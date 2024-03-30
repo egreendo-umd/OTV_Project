@@ -87,6 +87,7 @@ int Navigation::pylonHoming(int position[]) {
     delay(500);
     Serial.println("forward");
     movement.forward();
+    movement.move(SPEED);
     if (2 >= readings.center) {
       movement.stop();
       Serial.println("stop");
@@ -96,6 +97,7 @@ int Navigation::pylonHoming(int position[]) {
 
       if (success) {
         movement.reverse();
+        movement.move(SPEED);
         Serial.println("Reverse");
       
         if (OBSTACLE_CLOSE_THRESHOLD >= readings.center) {
@@ -106,6 +108,7 @@ int Navigation::pylonHoming(int position[]) {
           // Adjust to face towards the end goal zone
           while (5 <= abs(currentAzimuth - targetAzimuth)) {
             movement.left();
+            movement.move(SPEED);
             delay(200);
           }
         }
@@ -134,20 +137,25 @@ int Navigation::obstacleAvoidance(int currentPosition[], int targetPosition[]) {
     delay(1000);
     if (readings.left > readings.right) {
       movement.left();
+      movement.move(SPEED);
       Serial.println("Left");
       delay(500);
     } else {
       movement.right();
+      movement.move(SPEED);
       Serial.println("Right");
       delay(500);
     }
   }
 
   int newAzimuth = calculateAzimuth(currentPosition, targetPosition);
-  adjustHeading(currentAzimuth, newAzimuth);
+  if (abs(currentAzimuth - newAzimuth) > AZIMUTH_TOLERANCE*2) {
+    adjustHeading(currentAzimuth, newAzimuth);
+  }
 
   Serial.println("Forward");
   movement.forward();
+  movement.move(SPEED);
   return 1;
 }
 
@@ -256,9 +264,11 @@ int Navigation::adjustHeading(int currentAzimuth, int newAzimuth) {
   while (AZIMUTH_TOLERANCE <= abs(currentAzimuth - newAzimuth)) {
     if (currentAzimuth > newAzimuth) {
       movement.left();
+      movement.move(SPEED);
       delay(200);
     } else {
       movement.right();
+      movement.move(SPEED);
       delay(200);
     }
   }
