@@ -27,8 +27,9 @@ VisionSystemClient Enes100; // Initialize Enes100 Vision System
 void setup() {
     Serial.begin(9600); // Start communications
     // Initialize Enes100 Library
-    Enes100.begin("B-Team", DATA, 205, 3, 2);
-    Serial.println("ENES100 initialized");
+    Enes100.begin("B-Team", DATA, 697, 9, 8);
+    delay(1000); // Wait for Enes100 to initialize (1 second delay)
+    Serial.println("Vision System initialized");
 }
 
 void loop() {
@@ -73,5 +74,7 @@ void loop() {
             Serial.print("]: ");
             Serial.println(position[i]);
         }
+        delay(1000);
+        return;
     }
 }

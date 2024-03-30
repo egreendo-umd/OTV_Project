@@ -3,6 +3,18 @@
 
 // File to store and manage parameters that may be used by multiple functions/files
 
+// Navigation Parameters
+#define SENSOR_MAX_THRESHOLD 200;
+#define OBSTACLE_CLOSE_THRESHOLD 8;
+#define MAX_ATTEMPTS 10;
+#define AZIMUTH_TOLERANCE 10;
+#define TARGET_STOP_DISTANCE 2;
+#define LEFT_ANGLE_OFFSET;
+#define RIGHT_ANGLE_OFFSET;
+#define SCAN_ANGLE 10;
+#define SCAN_SECTORS 10;
+#define START_RADIUS_CM 20;
+
 // Payload and Mission Parameters
 #define PYLON_WIDTH 12;
 
@@ -14,6 +26,10 @@
 #define MODE_ONE_Y 100 // centimeters
 #define MODE_TWO_X 500 // centimeters
 #define MODE_TWO_Y 500 // centimeters
+#define AREA_A_CENTER_X 50 // centimeters
+#define AREA_A_CENTER_Y 50 // centimeters
+#define AREA_B_CENTER_X 250 // centimeters
+#define AREA_B_CENTER_Y 250 // centimeters
 
 // From ENES100.h
 #define CRASH_SITE        0
