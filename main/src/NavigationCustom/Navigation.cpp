@@ -1,7 +1,7 @@
 #include "Navigation.h"
 #include "Arduino.h"
-#include <cmath>
-#include <vector>
+// #include <cmath>
+// #include <vector>
 #include "../ParamsCustom/pinLayout.h"
 #include "../ParamsCustom/params.h"
 
@@ -291,15 +291,15 @@ void Navigation::moveForwardSetDistance(double speed, double distance) {
     Serial.println("Reached target distance, stop");
 }
 
-int Navigation::scanAndCalculateWidth(int position[]) {
+ScanResult Navigation::scanAndCalculateWidth(int position[]) {
     // Start by taking a measurement directly in front
     SensorReadings readings = initializeSensors();
     if (!readings.success) {
         Serial.println("Failed to initialize sensors. Exiting...");
         return 0;  // or handle the failure appropriately
     }
-    std::vector<SensorReadings> measurements = {readings};
-    std::vector<int> azimuths = {position[2]};
+    SensorReadings measurements[SCAN_SECTORS];
+    int azimuths[SCAN_SECTORS];
     bool objectInView = false;
 
     int widthThreshold = readings.center > OBSTACLE_CLOSE_THRESHOLD / 2 ? readings.center / 3 : 2;
@@ -328,16 +328,18 @@ int Navigation::scanAndCalculateWidth(int position[]) {
     double leftAzimuth = position[2] - SCAN_ANGLE/2;
     double objectStartAzimuth, objectEndAzimuth;
 
+    int idx = 0;
     for (double angle = leftAzimuth; angle <= leftAzimuth + SCAN_ANGLE; angle += SCAN_ANGLE / SCAN_SECTORS) {
       SensorReadings scanReading = initializeSensors();
       if (!scanReading.success) {
           Serial.println("Failed to initialize sensors. Exiting...");
           return 0;  // or handle the failure appropriately
       }
-      measurements.push_back({scanReading});
-      azimuth.push_back(angle);
+      measurements[idx] = scanReading;
+      azimuth[idx] = angle;
 
       turn(SCAN_ANGLE / SCAN_SECTORS);  // Incremental scanning step
+      idx++;
     }
 
     // Return to initial position
@@ -348,12 +350,12 @@ int Navigation::scanAndCalculateWidth(int position[]) {
     bool objectDetected = false;
 
     // Find the edges of the object based on the sensor readings
-    for (size_t i = 0; i < measurements.size(); ++i) {
+    for (int i = 0; i < SCAN_SECTORS; i++) {
         const SensorReadings& reading = measurements[i];
         double currentAzimuth = azimuths[i];
 
         // Check for the start of the object
-        if (reading.center <= OBSTACLE_CLOSE_THRESHOLD && !objectDetected) {
+        if (reading.center > 0 && reading.center <= OBSTACLE_CLOSE_THRESHOLD && !objectDetected) {
             leftEdgeAzimuth = currentAzimuth;
             objectDetected = true;  // Mark that we've started detecting an object
         }
@@ -378,7 +380,9 @@ int Navigation::scanAndCalculateWidth(int position[]) {
     // Calculate the width based on the collected data
     int objectWidth = (int)calculateWidthFromMeasurements(measurements);
 
-    return objectWidth;
+    ScanResult result = {leftEdgeAzimuth, rightEdgeAzimuth, objectWidth, objectDetected};
+
+    return result;
 }
 
 double Navigation::calculateWidthFromMeasurements(const std::vector<SensorReadings>& measurements) {
