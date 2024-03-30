@@ -29,19 +29,21 @@ int Navigation::pylonSearch(int position[]) {
   }
   // Determine starting position A or B
   bool startingPositionA = false;
-  int startDistance = 0 targetDistance = 0;
+  int startDistance = 0, targetDistance = 0;
+  int areaA[3] = {AREA_A_CENTER_X, AREA_A_CENTER_Y, 0};
+  int areaB[3] = {AREA_B_CENTER_X, AREA_B_CENTER_Y, 0};
 
   // Based on start position, calculate distance to opposite start area
   if (abs(position[0] - AREA_A_CENTER_X) < START_RADIUS_CM && abs(position[1] - AREA_A_CENTER_Y) < START_RADIUS_CM) {
     startingPositionA = true;
-    startDistance = calculateDistance(position, {AREA_A_CENTER_X, AREA_A_CENTER_Y, 0});
-    targetDistance = calculateDistance(position, {AREA_B_CENTER_X, AREA_B_CENTER_Y, 0});
+    startDistance = calculateDistance(position, areaA);
+    targetDistance = calculateDistance(position, areaB);
     Serial.print("Starting Position A, distance from center: ");
     Serial.println(startDistance);
   } else if (abs(position[0] - AREA_B_CENTER_X) < START_RADIUS_CM && abs(position[1] - AREA_B_CENTER_Y) < START_RADIUS_CM) {
     startingPositionA = false;
-    startDistance = calculateDistance(position, {AREA_B_CENTER_X, AREA_B_CENTER_Y, 0});
-    targetDistance = calculateDistance(position, {AREA_A_CENTER_X, AREA_A_CENTER_Y, 0});
+    startDistance = calculateDistance(position, areaB);
+    targetDistance = calculateDistance(position, areaA);
     Serial.print("Starting Position B, distance from center: ");
     Serial.println(startDistance);
   } else {
@@ -53,11 +55,11 @@ int Navigation::pylonSearch(int position[]) {
   int currentAzimuth = position[2];
   if (startingPositionA) {
     // Turn to face Area B
-    int targetAzimuth = calculateAzimuth(position, {AREA_B_CENTER_X, AREA_B_CENTER_Y, 0});
+    int targetAzimuth = calculateAzimuth(position, areaB);
     adjustHeading(currentAzimuth, targetAzimuth);
   } else {
     // Turn to face Area A
-    int targetAzimuth = calculateAzimuth(position, {AREA_A_CENTER_X, AREA_A_CENTER_Y, 0});
+    int targetAzimuth = calculateAzimuth(position, areaA);
     adjustHeading(currentAzimuth, targetAzimuth);
   }
 
@@ -67,7 +69,7 @@ int Navigation::pylonSearch(int position[]) {
   // Move forward set distance or until obstacle detected
   moveForwardSetDistance(SPEED, abs(targetDistance-START_RADIUS_CM));
 
-  return 1
+  return 1;
 }
 
 // Conduct width measurement and home in on pylon
@@ -79,6 +81,7 @@ int Navigation::pylonHoming(int position[]) {
       return 0;  // or handle the failure appropriately
   }
 
+  bool success = false;
   if (OBSTACLE_CLOSE_THRESHOLD >= readings.center) {
     movement.stop();
     Serial.println("stop");
@@ -103,7 +106,7 @@ int Navigation::pylonHoming(int position[]) {
           int currentAzimuth = position[2];
           int targetAzimuth = 90;
           // Adjust to face towards the end goal zone
-          while (5 <= abs(azimuth - targetAzimuth)) {
+          while (5 <= abs(currentAzimuth - targetAzimuth)) {
             movement.left();
             delay(200);
           }
@@ -195,7 +198,7 @@ int Navigation::sensorThree() {
   return cm; // Return the values from the sensor
 }
 
-SensorReadings Navigation::initializeSensors() {
+Navigation::SensorReadings Navigation::initializeSensors() {
     SensorReadings readings;
     readings.success = false;
     int attempt = 0;
@@ -291,12 +294,12 @@ void Navigation::moveForwardSetDistance(double speed, double distance) {
     Serial.println("Reached target distance, stop");
 }
 
-ScanResult Navigation::scanAndCalculateWidth(int position[]) {
+Navigation::ScanResult Navigation::scanAndCalculateWidth(int position[]) {
     // Start by taking a measurement directly in front
     SensorReadings readings = initializeSensors();
     if (!readings.success) {
         Serial.println("Failed to initialize sensors. Exiting...");
-        return 0;  // or handle the failure appropriately
+        return ScanResult{0, 0, 0, false};  // or handle the failure appropriately
     }
     SensorReadings measurements[SCAN_SECTORS];
     int azimuths[SCAN_SECTORS];
@@ -315,12 +318,12 @@ ScanResult Navigation::scanAndCalculateWidth(int position[]) {
             objectInView = false; // Assuming you want to set this to false if the object is too wide
             Serial.print("Detected width too large: ");
             Serial.println(width);
-            return 0;
+            return ScanResult{0, 0, 0, false};
         }
     } else {
         objectInView = false; // Ensure objectInView is set correctly if no close obstacle is detected
         Serial.println("No object detected in front");
-        return 0;
+        return ScanResult{0, 0, 0, false};
     }
 
     // Scan to the left
@@ -333,10 +336,10 @@ ScanResult Navigation::scanAndCalculateWidth(int position[]) {
       SensorReadings scanReading = initializeSensors();
       if (!scanReading.success) {
           Serial.println("Failed to initialize sensors. Exiting...");
-          return 0;  // or handle the failure appropriately
+          return ScanResult{0, 0, 0, false};  // or handle the failure appropriately
       }
       measurements[idx] = scanReading;
-      azimuth[idx] = angle;
+      azimuths[idx] = angle;
 
       turn(SCAN_ANGLE / SCAN_SECTORS);  // Incremental scanning step
       idx++;
@@ -375,25 +378,24 @@ ScanResult Navigation::scanAndCalculateWidth(int position[]) {
         // The width calculation could be refined based on the specific geometry and scanning logic
     } else {
         Serial.println("No object detected within the scanning range.");
-        return 0;
+        return ScanResult{0, 0, 0, false};
     }
     // Calculate the width based on the collected data
-    int objectWidth = (int)calculateWidthFromMeasurements(measurements);
+    int objectWidth = (int)calculateWidthFromMeasurements(measurements, SCAN_SECTORS);
 
     ScanResult result = {leftEdgeAzimuth, rightEdgeAzimuth, objectWidth, objectDetected};
 
     return result;
 }
 
-double Navigation::calculateWidthFromMeasurements(const std::vector<SensorReadings>& measurements) {
+double Navigation::calculateWidthFromMeasurements(const SensorReadings measurements[], int numMeasurements) {
     // Logic to calculate the object's width based on multiple sensor readings
-
     double widthSum = 0.0;
-    for (const auto& reading : measurements) {
-        double width = calculateObjectWidth(reading.left, reading.center, reading.right);
+    for (int i = 0; i < numMeasurements; i++) {
+        double width = calculateObjectWidth(measurements[i].left, measurements[i].center, measurements[i].right);
         widthSum += width;
     }
-    double averageWidth = widthSum / measurements.size();
+    double averageWidth = numMeasurements > 0 ? widthSum / numMeasurements : 0.0;
     return averageWidth;
 }
 

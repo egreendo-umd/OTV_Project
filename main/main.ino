@@ -65,7 +65,8 @@ void loop() {
     else if ((position[0] > MODE_ONE_X && position[1] > MODE_ONE_Y) &&
                 (position[0] < MODE_TWO_X && position[1] < MODE_TWO_Y)) 
     { 
-        nav.obstacleAvoidance(position);
+        int goalzone[3] = {GOALZONE_X, GOALZONE_Y, 0};
+        nav.obstacleAvoidance(position, goalzone); // Avoid obstacles to navigate to target position
     } else {
         Serial.print("There was an error in the position: ");
         for (int i = 0; i < 3; i++) {
