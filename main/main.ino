@@ -57,7 +57,10 @@ void loop() {
     // Determine if finding Payload or Avoiding Obstacles
     if (position[0] < MODE_ONE_X && position[1] < MODE_ONE_Y) 
     {
-        foundPylon = nav.pylonSearch(position); // Object width measurement
+        if (foundPylon == 0) {
+            foundPylon = nav.pylonSearch(position); // Object width measurement
+
+        }
         if (foundPylon == 1) {
             readyPayload = nav.pylonHoming(position); // Specific navigation to pylon and orientation for data extraction deployment
         }

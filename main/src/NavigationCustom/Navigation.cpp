@@ -222,6 +222,21 @@ Navigation::SensorReadings Navigation::initializeSensors() {
     return readings;
 }
 
+Navigation::SensorReadings Navigation::calibrateSensors() {
+  SensorReadings readings = initializeSensors();
+  if (!readings.success) {
+      Serial.println("Failed to initialize sensors. Exiting...");
+      return ScanResult{0, 0, 0, false};  // or handle the failure appropriately
+  }
+
+  // Figure out how to calibrate the sensors
+  // We should start from a known position, and find any offsets in the sensor readings
+  // Return should be the offset values for each sensor
+  // How to incorporate this?
+
+  return readings;
+}
+
 
 int Navigation::calculateAzimuth(int currentPosition[], int targetPosition[]) {
   int deltaX = targetPosition[0] - currentPosition[0];
