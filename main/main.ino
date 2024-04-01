@@ -2,26 +2,16 @@
 // If running locally, use the following includes for src libraries
 #include "src/ParamsCustom/params.h"
 #include "src/ParamsCustom/pinLayout.h"
-#include "src/NavigationCustom/Navigation.h"
 #include "src/VisionSystemCustom/VisionSystemClient.hpp"
-#include "src/MovementCustom/Movement.h"
-#include "src/PayloadCustom/Payload.h"
 #else
 // If running in Github Actions, use the following includes
 #include <params.h>
 #include <pinLayout.h>
-#include <Navigation.h>
 #include <VisionSystemClient.hpp>
-#include <Movement.h>
-#include <Payload.h>
 #endif
 
 
 
-
-Movement movement; // Initialize Movement Pins and Variables
-Navigation nav(movement); // Initialize Navigation Pins and Variables
-Payload payload; // Initialize Payload Pins and Variables
 VisionSystemClient Enes100; // Initialize Enes100 Vision System
 
 void setup() {
@@ -33,12 +23,13 @@ void setup() {
 }
 
 void loop() {
-    int foundPylon, isVisible, readyPayload;
+    int isVisible;
     int x, y;
 
    // Get position from Enes100 Vision System
     x = Enes100.getX();
     y = Enes100.getY();
+    theta = Enes100.getTheta();
     isVisible = Enes100.isVisible();
 
     if (!isVisible) {
@@ -49,36 +40,8 @@ void loop() {
     Serial.print("Current position: X=");
     Serial.print(x);
     Serial.print(" Y=");
-    Serial.println(y);
+    Serial.print(y);
+    Serial.print(" Theta=");
+    Serial.println(theta);
 
-    int position[3] = {static_cast<int>(x * 100), static_cast<int>(y * 100), 0}; // Convert meters to centimeters, assuming az is 0 for simplicity
-
-
-    // Determine if finding Payload or Avoiding Obstacles
-    if (position[0] < MODE_ONE_X && position[1] < MODE_ONE_Y) 
-    {
-        if (foundPylon == 0) {
-            foundPylon = nav.pylonSearch(position); // Object width measurement
-
-        }
-        if (foundPylon == 1) {
-            readyPayload = nav.pylonHoming(position); // Specific navigation to pylon and orientation for data extraction deployment
-        }
-    } 
-    else if ((position[0] > MODE_ONE_X && position[1] > MODE_ONE_Y) &&
-                (position[0] < MODE_TWO_X && position[1] < MODE_TWO_Y)) 
-    { 
-        int goalzone[3] = {GOALZONE_X, GOALZONE_Y, 0};
-        nav.obstacleAvoidance(position, goalzone); // Avoid obstacles to navigate to target position
-    } else {
-        Serial.print("There was an error in the position: ");
-        for (int i = 0; i < 3; i++) {
-            Serial.print("position[");
-            Serial.print(i);
-            Serial.print("]: ");
-            Serial.println(position[i]);
-        }
-        delay(1000);
-        return;
-    }
 }
