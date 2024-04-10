@@ -7,7 +7,9 @@ class Payload {
         Payload(); // Declare the constructor
         int deployPayload(void);
         void collectPayload(void);
+        int getCycle();
     private:
+        int readOneCycle(int mils);
 };
 
 #endif

@@ -11,13 +11,15 @@
 #define S3Echo A5
 
 //movement funcs pins here
-#define N1 A3 // MAKE SURE PLEASE MAKE SURE THE PINS ARE GOING TO THE CORRECT MOTORS
+#define N1 A3
 #define N2 A2
 #define N3 A1
 #define N4 8
 #define ENA 6 
 #define ENB 5 
 
+//payload pins here
 #define PAYLOAD 0
-
+#define C1 12 //cycle positive side (likely to also be pin 7)
+#define R1 7 //reed switch positive side
 #endif
