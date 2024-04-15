@@ -25,11 +25,13 @@ Payload payload; // Initialize Payload Pins and Variables
 VisionSystemClient Enes100; // Initialize Enes100 Vision System
 
 void setup() {
-    Serial.begin(9600); // Start communications
+    // Serial.begin(9600);
     // Initialize Enes100 Library
-    Enes100.begin("B-Team", DATA, 697, 9, 8);
+    Enes100.begin("B-Team", DATA, 697, TX, RX);
+    Enes100.println("Beginning...");
+
     delay(1000); // Wait for Enes100 to initialize (1 second delay)
-    Serial.println("Vision System initialized");
+    Enes100.println("Vision System initialized");
 }
 
 void loop() {

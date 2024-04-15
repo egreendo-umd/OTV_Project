@@ -11,13 +11,19 @@
 #define S3Echo A5
 
 //movement funcs pins here
-#define N1 6 // MAKE SURE PLEASE MAKE SURE THE PINS ARE GOING TO THE CORRECT MOTORS
-#define N2 3
-#define N3 5
-#define N4 11
-#define ENA 1 //temp
-#define ENB 2 //temp
+#define N1 2 // MAKE SURE PLEASE MAKE SURE THE PINS ARE GOING TO THE CORRECT MOTORS
+#define N2 4
+#define N3 7
+#define N4 8
+#define ENA 6 //temp
+#define ENB 5 //temp
 
-#define PAYLOAD 0
+// WiFi Pins
+#define RX 13
+#define TX 12
+
+#define STEPPER 11
+#define PAYLOAD 10
+#define MAGNETIC_READ 9
 
 #endif
