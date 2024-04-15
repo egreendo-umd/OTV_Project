@@ -20,7 +20,7 @@
 
 // Propulsion and Movement Parameters
 #define SPEED 160
-#define SPIN_TIME 10
+#define SPIN_TIME 10000
 
 // Filler values for determining mode switch boundaries from OVS query
 #define MODE_ONE_X 100 // centimeters

@@ -60,12 +60,16 @@ void Movement::turn(int angle) {
     int setSpeed = SPEED; // Maximum speed for turning
     int turnDuration = map(abs(angle), 0, 360, 0, SPIN_TIME); // Map angle to time (adjust 2000 as needed)
 
+    Serial.print("Turning, speed: ");
+    Serial.print(setSpeed);
+    Serial.print(", duration: ");
+    Serial.println(turnDuration);
+    delay(10);
     if (angle > 0) {
         right();
     } else {
         left();
     }
-
     move(setSpeed);
     delay(turnDuration); // turn for a time proportional to the angle
     stop();

@@ -25,31 +25,35 @@ void loop() {
     Serial.println("Testing forward motion");
     movement.forward();
     movement.move(SPEED);
-    delay(1000);
+    delay(5000);
 
+    movement.stop();
     Serial.println("Testing reverse motion");
     movement.reverse();
     movement.move(SPEED);
-    delay(1000);
+    delay(5000);
 
+    movement.stop();
     Serial.println("Testing left motion");
     movement.left();
     movement.move(SPEED);
+    delay(5000);
     movement.stop();
     delay(1000);
 
     Serial.println("Testing right motion");
     movement.right();
     movement.move(SPEED);
+    delay(5000);
     movement.stop();
     delay(1000);
 
     Serial.println("Testing angle turn motion");
     Serial.println("Turning left 90 degrees");
     movement.turn(-90);
-    delay(1000);
+    delay(5000);
     Serial.println("Turning right 180 degrees");
     movement.turn(180);
-    delay(1000);
+    delay(5000);
 
 }

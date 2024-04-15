@@ -1,6 +1,7 @@
 #ifndef IMovement_h
 #define IMovement_h
 
+
 class IMovement {
 public:
     virtual void move(int setSpeed);
