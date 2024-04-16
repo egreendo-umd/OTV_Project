@@ -20,17 +20,19 @@
 
 // Propulsion and Movement Parameters
 #define SPEED 160
+#define TURNSPEED 100
 #define SPIN_TIME 10000
+#define BUFFER_ANGLE 20
 
 // Filler values for determining mode switch boundaries from OVS query
 #define MODE_ONE_X 100 // centimeters
 #define MODE_ONE_Y 100 // centimeters
-#define MODE_TWO_X 500 // centimeters
-#define MODE_TWO_Y 500 // centimeters
-#define AREA_A_CENTER_X 50 // centimeters
+#define MODE_TWO_X 350 // centimeters
+#define MODE_TWO_Y 150 // centimeters
+#define AREA_A_CENTER_X 55 // centimeters
 #define AREA_A_CENTER_Y 50 // centimeters
-#define AREA_B_CENTER_X 250 // centimeters
-#define AREA_B_CENTER_Y 250 // centimeters
+#define AREA_B_CENTER_X 55 // centimeters
+#define AREA_B_CENTER_Y 150 // centimeters
 #define GOALZONE_X 500 // centimeters
 #define GOALZONE_Y 500 // centimeters
 

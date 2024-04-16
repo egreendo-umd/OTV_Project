@@ -2,6 +2,7 @@
 #define Navigation_h
 
 #include "../MovementCustom/IMovement.h"
+#include "src/VisionSystemCustom/VisionSystemClient.hpp"
 
 class Navigation {
     public:
@@ -19,7 +20,7 @@ class Navigation {
         double objectWidth;
         bool objectDetected;
         };
-        Navigation(IMovement& movementController); // Constructor
+        Navigation(IMovement& movementController, VisionSystemClient& Enes100); // Constructor
         // Main Navigation Functions
         int pylonSearch(int position[]); // Determine starting position and navigate to pylon position
         int pylonHoming(int position[]); // Measure and home in on pylon
@@ -45,6 +46,7 @@ class Navigation {
         IMovement& movement;
         bool mode1;
         bool mode2;
+        VisionSystemClient* Enes100;
 };
 
 #endif

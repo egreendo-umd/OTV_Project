@@ -5,7 +5,7 @@
 class IMovement {
 public:
     virtual void move(int setSpeed);
-    virtual void turn(int angle);
+    virtual void turn(int angle, int overrideAngle);
     virtual void stop();
     virtual void forward();
     virtual void reverse();

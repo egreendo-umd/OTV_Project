@@ -3,6 +3,7 @@
 #include "src/ParamsCustom/params.h"
 #include "src/ParamsCustom/pinLayout.h"
 #include "src/MovementCustom/Movement.h"
+#include "src/NavigationCustom/Navigation.h"
 #else
 // If running in Github Actions, use the following includes
 #include <params.h>
@@ -12,48 +13,49 @@
 
 
 
-
-Movement movement; // Initialize Movement Pins and Variables
+VisionSystemClient Enes100;
+Movement movement(Enes100); // Initialize Movement Pins and Variables
+Navigation navigation(movement, Enes100);
 
 void setup() {
-    Serial.begin(9600); // Start communications
+    //Serial.begin(9600); // Start communications
     Serial.println("Starting movement tests");
 }
 
 void loop() {
     // Test the movement functions
-    Serial.println("Testing forward motion");
-    movement.forward();
-    movement.move(SPEED);
-    delay(5000);
+    // Serial.println("Testing forward motion");
+    // movement.forward();
+    // movement.move(SPEED);
+    // delay(5000);
 
-    movement.stop();
-    Serial.println("Testing reverse motion");
-    movement.reverse();
-    movement.move(SPEED);
-    delay(5000);
+    // movement.stop();
+    // Serial.println("Testing reverse motion");
+    // movement.reverse();
+    // movement.move(SPEED);
+    // delay(5000);
 
-    movement.stop();
-    Serial.println("Testing left motion");
-    movement.left();
-    movement.move(SPEED);
-    delay(5000);
-    movement.stop();
-    delay(1000);
+    // movement.stop();
+    // Serial.println("Testing left motion");
+    // movement.left();
+    // movement.move(SPEED);
+    // delay(5000);
+    // movement.stop();
+    // delay(1000);
 
-    Serial.println("Testing right motion");
-    movement.right();
-    movement.move(SPEED);
-    delay(5000);
-    movement.stop();
-    delay(1000);
+    // Serial.println("Testing right motion");
+    // movement.right();
+    // movement.move(SPEED);
+    // delay(5000);
+    // movement.stop();
+    // delay(1000);
 
-    Serial.println("Testing angle turn motion");
-    Serial.println("Turning left 90 degrees");
-    movement.turn(-90);
-    delay(5000);
-    Serial.println("Turning right 180 degrees");
-    movement.turn(180);
-    delay(5000);
+    // Serial.println("Testing angle turn motion");
+    // Serial.println("Turning left 90 degrees");
+    // movement.turn(-90);
+    // delay(5000);
+    // Serial.println("Turning right 180 degrees");
+    // movement.turn(180);
+    // delay(5000);
 
 }

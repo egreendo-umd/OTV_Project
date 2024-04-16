@@ -11,9 +11,9 @@
 #define S3Echo 7
 
 //movement funcs pins here
-#define N1 A3 // MAKE SURE PLEASE MAKE SURE THE PINS ARE GOING TO THE CORRECT MOTORS
-#define N2 A2
-#define N3 A1
+#define N1 2 // MAKE SURE PLEASE MAKE SURE THE PINS ARE GOING TO THE CORRECT MOTORS
+#define N2 4
+#define N3 7
 #define N4 8
 #define ENA 6 //temp
 #define ENB 5 //temp
