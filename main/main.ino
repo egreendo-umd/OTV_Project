@@ -25,14 +25,13 @@ VisionSystemClient Enes100; // Initialize Enes100 Vision System
 Movement movement(Enes100); // Initialize Movement Pins and Variables
 Navigation nav(movement, Enes100); // Initialize Navigation Pins and Variables
 
+
+enum {PYLON_MODE, AVOID_MODE, ENDZONE_MODE}
 void setup() {
     // Serial.begin(9600);
     // Initialize Enes100 Library
     Enes100.begin("B-Team", DATA, 697, TX, RX);
-    Enes100.println("Beginning...");
-
     delay(1000); // Wait for Enes100 to initialize (1 second delay)
-    Enes100.println("Vision System initialized");
 }
 
 void loop() {

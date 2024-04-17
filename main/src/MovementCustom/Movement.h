@@ -13,7 +13,7 @@ public:
     void reverse();
     void left();
     void right();
-    void turn(int angle); //left = 0, right = 1
+    void turn(int angle, bool override = false, int overrideAngle = 0); //left = 0, right = 1
     void stop();
 
 private:

@@ -24,52 +24,33 @@ int Navigation::pylonSearch(int position[]) {
   // Initialize the sensors
   SensorReadings readings = initializeSensors();
   if (!readings.success) {
-      Serial.println("Failed to initialize sensors. Exiting...");
+      Enes100->println("Failed to initialize sensors. Exiting...");
       return 0;  // or handle the failure appropriately
   }
-  // Determine starting position A or B
-  bool startingPositionA = false;
-  int startDistance = 0, targetDistance = 0;
-  int areaA[3] = {AREA_A_CENTER_X, AREA_A_CENTER_Y, 0};
-  int areaB[3] = {AREA_B_CENTER_X, AREA_B_CENTER_Y, 0};
 
-  // Based on start position, calculate distance to opposite start area
-  if (abs(position[0] - AREA_A_CENTER_X) < START_RADIUS_CM && abs(position[1] - AREA_A_CENTER_Y) < START_RADIUS_CM) {
-    startingPositionA = true;
-    startDistance = calculateDistance(position, areaA);
-    targetDistance = calculateDistance(position, areaB);
-    Serial.print("Starting Position A, distance from center: ");
-    Serial.println(startDistance);
-  } else if (abs(position[0] - AREA_B_CENTER_X) < START_RADIUS_CM && abs(position[1] - AREA_B_CENTER_Y) < START_RADIUS_CM) {
-    startingPositionA = false;
-    startDistance = calculateDistance(position, areaB);
-    targetDistance = calculateDistance(position, areaA);
-    Serial.print("Starting Position B, distance from center: ");
-    Serial.println(startDistance);
-  } else {
-    Serial.println("Error in starting position");
+  int turnQuant;
+  bool turnDir = 0;
+  int currentAzimuth = position[2];
+  turnQuant = abs(currentAzimuth) + 90;
+  if(position[1] < 1.0) // pos A
+  {
+    turnQuant *= -1; 
+    turnDir = 1;
+  }
+  else if(position[1] < 0) // Vision Error 
+  {
+    Enes100->println("Error in starting position");
     return 0;
   }
 
-  // Turn to face the opposite start area
-  int currentAzimuth = position[2];
-  if (startingPositionA) {
-    // Turn to face Area B
-    int targetAzimuth = calculateAzimuth(position, areaB);
-    adjustHeading(currentAzimuth, targetAzimuth);
-  } else {
-    // Turn to face Area A
-    int targetAzimuth = calculateAzimuth(position, areaA);
-    adjustHeading(currentAzimuth, targetAzimuth);
-  }
-
-  Serial.print("Moving forward to opposite start area, distance: ");
-  Serial.println(abs(targetDistance-START_RADIUS_CM));
-
-  // Move forward set distance or until obstacle detected
-  moveForwardSetDistance(SPEED, abs(targetDistance-START_RADIUS_CM));
-
-  return 1;
+  movement.turn(turnQuant, turnDir*90); 
+  // pos B's turn direction is already correct direction;
+  // using turnOverride to make sure that the OTV doesn't overturn.
+  // buffer should be tuned
+  movement.forward();
+  movement.move(SPEED);
+  
+  return pylonHoming(position);
 }
 
 // Conduct width measurement and home in on pylon
