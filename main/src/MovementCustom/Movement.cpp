@@ -3,7 +3,6 @@
 #include "../ParamsCustom/pinLayout.h"
 #include "../ParamsCustom/params.h"
 
-#define ANGLE_BUFFER 20
 
 Movement::Movement(VisionSystemClient& Enes100)
 {
@@ -67,7 +66,7 @@ void Movement::turn(int angle, bool override, int overrideAngle) {
     Enes100->print(", duration: ");
     Enes100->println(turnDuration);
     delay(10);
-    if (angle > 0) {
+    if (angle < 0) {
         right();
     } else {
         left();

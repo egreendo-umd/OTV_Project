@@ -29,13 +29,13 @@ int Navigation::pylonSearch(int position[]) {
   }
 
   int turnQuant;
-  bool turnDir = 0;
+  bool turnDir = 1;
   int currentAzimuth = position[2];
   turnQuant = abs(currentAzimuth) + 90;
-  if(position[1] < 1.0) // pos A
+  if(position[1] > 1.0) // pos A
   {
     turnQuant *= -1; 
-    turnDir = 1;
+    turnDir = -1;
   }
   else if(position[1] < 0) // Vision Error 
   {
@@ -43,14 +43,12 @@ int Navigation::pylonSearch(int position[]) {
     return 0;
   }
 
-  movement.turn(turnQuant, turnDir*90); 
+  movement.turn(turnQuant, true, turnDir*90); 
   // pos B's turn direction is already correct direction;
   // using turnOverride to make sure that the OTV doesn't overturn.
   // buffer should be tuned
-  movement.forward();
-  movement.move(SPEED);
   
-  return pylonHoming(position);
+  return 1;
 }
 
 // Conduct width measurement and home in on pylon
@@ -58,22 +56,22 @@ int Navigation::pylonHoming(int position[]) {
   // Initialize the sensors
   SensorReadings readings = initializeSensors();
   if (!readings.success) {
-      Serial.println("Failed to initialize sensors. Exiting...");
+      Enes100->println("Failed to initialize sensors. Exiting...");
       return 0;  // or handle the failure appropriately
   }
 
   bool success = false;
   if (OBSTACLE_CLOSE_THRESHOLD >= readings.center) {
     movement.stop();
-    Serial.println("stop");
+    Enes100->println("stop");
     // We may want to reduce speed here
     delay(500);
-    Serial.println("forward");
+    Enes100->println("forward");
     movement.forward();
     movement.move(SPEED);
     if (2 >= readings.center) {
       movement.stop();
-      Serial.println("stop");
+      Enes100->println("stop");
 
       // This functionality should be brought into main.ino
       // int success = payload.deployPayload(); // Will need to create deployPayload() function
@@ -81,11 +79,11 @@ int Navigation::pylonHoming(int position[]) {
       if (success) {
         movement.reverse();
         movement.move(SPEED);
-        Serial.println("Reverse");
+        Enes100->println("Reverse");
       
         if (OBSTACLE_CLOSE_THRESHOLD >= readings.center) {
           movement.stop();
-          Serial.println("stop");
+          Enes100->println("stop");
           int currentAzimuth = position[2];
           int targetAzimuth = 90;
           // Adjust to face towards the end goal zone
@@ -107,7 +105,7 @@ int Navigation::obstacleAvoidance(int currentPosition[], int targetPosition[]) {
   // Initialize the sensors
   SensorReadings readings = initializeSensors();
   if (!readings.success) {
-      Serial.println("Failed to initialize sensors. Exiting...");
+      Enes100->println("Failed to initialize sensors. Exiting...");
       return 0;  // or handle the failure appropriately
   }
 
@@ -116,17 +114,17 @@ int Navigation::obstacleAvoidance(int currentPosition[], int targetPosition[]) {
   // We can upgrade this to flow smoothly by implementing PID or something similar
   if (OBSTACLE_CLOSE_THRESHOLD >= readings.center) {
     movement.stop();
-    Serial.println("Stop, obstacle too close");
+    Enes100->println("Stop, obstacle too close");
     delay(1000);
     if (readings.left > readings.right) {
       movement.left();
       movement.move(SPEED);
-      Serial.println("Left");
+      Enes100->println("Left");
       delay(500);
     } else {
       movement.right();
       movement.move(SPEED);
-      Serial.println("Right");
+      Enes100->println("Right");
       delay(500);
     }
   }
@@ -136,7 +134,7 @@ int Navigation::obstacleAvoidance(int currentPosition[], int targetPosition[]) {
     adjustHeading(currentAzimuth, newAzimuth);
   }
 
-  Serial.println("Forward");
+  Enes100->println("Forward");
   movement.forward();
   movement.move(SPEED);
   return 1;
@@ -153,7 +151,7 @@ int Navigation::sensorOne() {
 
   long t = pulseIn(S1Echo, HIGH);//Get the pulse
   int cm = t / 29 / 2; //Convert time to the distance
-  Serial.println(cm);
+  Enes100->println(cm);
   return cm; // Return the values from the sensor
 }
 
@@ -168,7 +166,7 @@ int Navigation::sensorTwo() {
 
   long t = pulseIn(S2Echo, HIGH);//Get the pulse
   int cm = t / 29 / 2; //Convert time to the distance
-  Serial.println(cm);
+  Enes100->println(cm);
   return cm; // Return the values from the sensor
 }
 
@@ -183,7 +181,7 @@ int Navigation::sensorThree() {
 
   long t = pulseIn(S3Echo, HIGH);//Get the pulse
   int cm = t / 29 / 2; //Convert time to the distance
-  Serial.println(cm);
+  Enes100->println(cm);
   return cm; // Return the values from the sensor
 }
 
@@ -208,7 +206,7 @@ Navigation::SensorReadings Navigation::initializeSensors() {
     }
     // Log if the sensors do not initialize
     if (!readings.success) {
-        Serial.println("Error initializing sensors");
+        Enes100->println("Error initializing sensors");
     }
     return readings;
 }
@@ -216,7 +214,7 @@ Navigation::SensorReadings Navigation::initializeSensors() {
 Navigation::SensorReadings Navigation::calibrateSensors() {
   SensorReadings readings = initializeSensors();
   if (!readings.success) {
-      Serial.println("Failed to initialize sensors. Exiting...");
+      Enes100->println("Failed to initialize sensors. Exiting...");
       return readings;  // or handle the failure appropriately
   }
 
@@ -283,12 +281,12 @@ void Navigation::moveForwardSetDistance(double speed, double distance) {
     while (millis() - startTime < travelTime * 1000) { // Multiply by 1000 to convert seconds to milliseconds
         SensorReadings readings = initializeSensors();
         if (!readings.success) {
-            Serial.println("Failed to initialize sensors. Exiting...");
+            Enes100->println("Failed to initialize sensors. Exiting...");
             return 0;  // or handle the failure appropriately
         }
         if (readings.center <= OBSTACLE_CLOSE_THRESHOLD || readings.center >= SENSOR_MAX_THRESHOLD) {
             movement.stop();
-            Serial.println("Obstacle detected or reached max threshold, stopping");
+            Enes100->println("Obstacle detected or reached max threshold, stopping");
             return;
         }
 
@@ -298,14 +296,14 @@ void Navigation::moveForwardSetDistance(double speed, double distance) {
     }
 
     movement.stop(); // Stop after traveling the set distance
-    Serial.println("Reached target distance, stop");
+    Enes100->println("Reached target distance, stop");
 }
 
 Navigation::ScanResult Navigation::scanAndCalculateWidth(int position[]) {
     // Start by taking a measurement directly in front
     SensorReadings readings = initializeSensors();
     if (!readings.success) {
-        Serial.println("Failed to initialize sensors. Exiting...");
+        Enes100->println("Failed to initialize sensors. Exiting...");
         return ScanResult{0, 0, 0, false};  // or handle the failure appropriately
     }
     SensorReadings measurements[SCAN_SECTORS];
@@ -319,17 +317,17 @@ Navigation::ScanResult Navigation::scanAndCalculateWidth(int position[]) {
 
         if (width < PYLON_WIDTH * 2) {
             objectInView = true;
-            Serial.print("Detected object width is within threshold: ");
-            Serial.println(width);
+            Enes100->print("Detected object width is within threshold: ");
+            Enes100->println(width);
         } else {
             objectInView = false; // Assuming you want to set this to false if the object is too wide
-            Serial.print("Detected width too large: ");
-            Serial.println(width);
+            Enes100->print("Detected width too large: ");
+            Enes100->println(width);
             return ScanResult{0, 0, 0, false};
         }
     } else {
         objectInView = false; // Ensure objectInView is set correctly if no close obstacle is detected
-        Serial.println("No object detected in front");
+        Enes100->println("No object detected in front");
         return ScanResult{0, 0, 0, false};
     }
 
@@ -342,7 +340,7 @@ Navigation::ScanResult Navigation::scanAndCalculateWidth(int position[]) {
     for (double angle = leftAzimuth; angle <= leftAzimuth + SCAN_ANGLE; angle += SCAN_ANGLE / SCAN_SECTORS) {
       SensorReadings scanReading = initializeSensors();
       if (!scanReading.success) {
-          Serial.println("Failed to initialize sensors. Exiting...");
+          Enes100->println("Failed to initialize sensors. Exiting...");
           return ScanResult{0, 0, 0, false};  // or handle the failure appropriately
       }
       measurements[idx] = scanReading;
@@ -376,15 +374,15 @@ Navigation::ScanResult Navigation::scanAndCalculateWidth(int position[]) {
         }
     }
     if (objectDetected && leftEdgeAzimuth != 0 && rightEdgeAzimuth != 0) {
-        Serial.print("Left edge of object detected at azimuth: ");
-        Serial.println(leftEdgeAzimuth);
-        Serial.print("Right edge of object detected at azimuth: ");
-        Serial.println(rightEdgeAzimuth);
+        Enes100->print("Left edge of object detected at azimuth: ");
+        Enes100->println(leftEdgeAzimuth);
+        Enes100->print("Right edge of object detected at azimuth: ");
+        Enes100->println(rightEdgeAzimuth);
 
         // Calculate object width or other processing based on the detected edges
         // The width calculation could be refined based on the specific geometry and scanning logic
     } else {
-        Serial.println("No object detected within the scanning range.");
+        Enes100->println("No object detected within the scanning range.");
         return ScanResult{0, 0, 0, false};
     }
     // Calculate the width based on the collected data

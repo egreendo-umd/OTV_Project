@@ -19,11 +19,11 @@
 #define ENB 5 //temp
 
 // WiFi Pins
-#define RX 13
-#define TX 12
+#define RX 3
+#define TX 10
 
 #define STEPPER 11
-#define PAYLOAD 10
+#define COPPER 12
 #define MAGNETIC_READ 9
 
 #endif

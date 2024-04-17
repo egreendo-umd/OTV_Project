@@ -18,69 +18,42 @@
 
 
 
-
-
 Payload payload; // Initialize Payload Pins and Variables
 VisionSystemClient Enes100; // Initialize Enes100 Vision System
 Movement movement(Enes100); // Initialize Movement Pins and Variables
 Navigation nav(movement, Enes100); // Initialize Navigation Pins and Variables
 
-
-enum {PYLON_MODE, AVOID_MODE, ENDZONE_MODE}
+enum {MODE_PYLON, MODE_OBSTACLE, MODE_ENDZONE};
+int mode;
+float x, y, heading;
 void setup() {
     // Serial.begin(9600);
     // Initialize Enes100 Library
     Enes100.begin("B-Team", DATA, 697, TX, RX);
-    delay(1000); // Wait for Enes100 to initialize (1 second delay)
+    delay(2000); // Wait for Enes100 to initialize (1 second delay)
+    x = Enes100.getX();
+    y = Enes100.getY();
+    heading = 180* (Enes100.getTheta()/M_PI);
+    mode = MODE_PYLON;
 }
 
 void loop() {
-    int foundPylon, isVisible, readyPayload;
-    int x, y;
-
-   // Get position from Enes100 Vision System
-    x = Enes100.getX();
-    y = Enes100.getY();
-    isVisible = Enes100.isVisible();
-
-    if (!isVisible) {
-        Serial.println("Marker not visible");
+    if (!Enes100.isVisible()) 
         return;
-    }
 
-    Serial.print("Current position: X=");
-    Serial.print(x);
-    Serial.print(" Y=");
-    Serial.println(y);
-
-    int position[3] = {static_cast<int>(x * 100), static_cast<int>(y * 100), 0}; // Convert meters to centimeters, assuming az is 0 for simplicity
-
-
-    // Determine if finding Payload or Avoiding Obstacles
-    if (position[0] < MODE_ONE_X && position[1] < MODE_ONE_Y) 
+    // Get position from Enes100 Vision System
+    int position[3] = {static_cast<int>(x * 100), static_cast<int>(y * 100), static_cast<int>(heading)}; // Convert meters to centimeters, assuming az is 0 for simplicity
+    switch(mode)
     {
-        if (foundPylon == 0) {
-            foundPylon = nav.pylonSearch(position); // Object width measurement
-
-        }
-        if (foundPylon == 1) {
-            readyPayload = nav.pylonHoming(position); // Specific navigation to pylon and orientation for data extraction deployment
-        }
-    } 
-    else if ((position[0] > MODE_ONE_X && position[1] > MODE_ONE_Y) &&
-                (position[0] < MODE_TWO_X && position[1] < MODE_TWO_Y)) 
-    { 
-        int goalzone[3] = {GOALZONE_X, GOALZONE_Y, 0};
-        nav.obstacleAvoidance(position, goalzone); // Avoid obstacles to navigate to target position
-    } else {
-        Serial.print("There was an error in the position: ");
-        for (int i = 0; i < 3; i++) {
-            Serial.print("position[");
-            Serial.print(i);
-            Serial.print("]: ");
-            Serial.println(position[i]);
-        }
-        delay(1000);
-        return;
+    case MODE_PYLON:
+        while(!nav.pylonSearch(position));
+        break;
+    default:
+        exit(0);
     }
+    
+    
+
+    
+
 }
