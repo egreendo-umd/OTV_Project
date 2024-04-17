@@ -6,7 +6,7 @@
 int centerSensor, leftSensor, rightSensor;
 
 // Initialize the Navigation System
-Navigation::Navigation(IMovement& movementController) : movement(movementController) {
+Navigation::Navigation(Movement& movementController, VisionSystemClient& Enes100){
   //Set the Trig pins as output pins
   pinMode(S1Trig, OUTPUT);
   pinMode(S2Trig, OUTPUT);
@@ -15,6 +15,8 @@ Navigation::Navigation(IMovement& movementController) : movement(movementControl
   pinMode(S1Echo, INPUT);
   pinMode(S2Echo, INPUT);
   pinMode(S3Echo, INPUT);
+  movement = movementController;
+  this->Enes100 = &Enes100;
 }
 
 // Navigation to opposite Start area then measure object widths to locate pylon

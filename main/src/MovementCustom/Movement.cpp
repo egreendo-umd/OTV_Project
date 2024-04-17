@@ -3,7 +3,7 @@
 #include "../ParamsCustom/pinLayout.h"
 #include "../ParamsCustom/params.h"
 
-Movement::Movement()
+Movement::Movement(VisionSystemClient& Enes100)
 {
     pinMode(N1, OUTPUT);
     pinMode(N2, OUTPUT);
@@ -12,6 +12,7 @@ Movement::Movement()
     pinMode(ENA, OUTPUT);
     pinMode(ENB, OUTPUT);
     this->stop();
+    this->Enes100 = &Enes100;
 }
 
 void Movement::move(int setSpeed)

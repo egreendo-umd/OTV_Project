@@ -19,10 +19,11 @@
 
 
 
-Movement movement; // Initialize Movement Pins and Variables
-Navigation nav(movement); // Initialize Navigation Pins and Variables
+
 Payload payload; // Initialize Payload Pins and Variables
 VisionSystemClient Enes100; // Initialize Enes100 Vision System
+Movement movement(Enes100); // Initialize Movement Pins and Variables
+Navigation nav(movement, Enes100); // Initialize Navigation Pins and Variables
 
 void setup() {
     // Serial.begin(9600);

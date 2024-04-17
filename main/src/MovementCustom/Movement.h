@@ -2,21 +2,22 @@
 #ifndef Movement_h
 #define Movement_h
 
-#include "IMovement.h"
+#include "../VisionSystemCustom/VisionSystemClient.hpp"
 
-class Movement : public IMovement{
+class Movement{
 public:
-    Movement(); // Declare the constructor
+    Movement(VisionSystemClient& Enes100); // Declare the constructor
 
-    void move(int setSpeed) override;
-    void forward() override;
-    void reverse() override;
-    void left() override;
-    void right() override;
-    void turn(int angle) override; //left = 0, right = 1
-    void stop() override;
+    void move(int setSpeed);
+    void forward();
+    void reverse();
+    void left();
+    void right();
+    void turn(int angle); //left = 0, right = 1
+    void stop();
 
 private:
+    VisionSystemClient* Enes100;
     bool in1, in2, in3, in4;
 };
 

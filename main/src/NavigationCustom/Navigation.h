@@ -1,7 +1,7 @@
 #ifndef Navigation_h
 #define Navigation_h
 
-#include "../MovementCustom/IMovement.h"
+#include "../MovementCustom/Movement.h"
 
 class Navigation {
     public:
@@ -19,7 +19,7 @@ class Navigation {
         double objectWidth;
         bool objectDetected;
         };
-        Navigation(IMovement& movementController); // Constructor
+        Navigation(Movement& movementController, VisionSystemClient& Enes100); // Constructor
         // Main Navigation Functions
         int pylonSearch(int position[]); // Determine starting position and navigate to pylon position
         int pylonHoming(int position[]); // Measure and home in on pylon
@@ -42,7 +42,8 @@ class Navigation {
         // Movement Function that shouldn't be here
         void moveForwardSetDistance(double speed, double distance); // This should be in movement...
     private:
-        IMovement& movement;
+        VisionSystemClient* Enes100;
+        Movement& movement;
         bool mode1;
         bool mode2;
 };
