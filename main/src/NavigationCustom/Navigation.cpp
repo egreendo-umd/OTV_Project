@@ -6,7 +6,7 @@
 int centerSensor, leftSensor, rightSensor;
 
 // Initialize the Navigation System
-Navigation::Navigation(IMovement& movementController, VisionSystemClient& Enes100) : movement(movementController) {
+Navigation::Navigation(Movement& movementController, VisionSystemClient& Enes100) : movement(movementController, Enes100) {
   //Set the Trig pins as output pins
   pinMode(S1Trig, OUTPUT);
   pinMode(S2Trig, OUTPUT);

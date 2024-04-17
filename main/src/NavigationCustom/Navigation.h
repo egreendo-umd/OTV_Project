@@ -1,9 +1,7 @@
 #ifndef Navigation_h
 #define Navigation_h
 
-#include "../MovementCustom/IMovement.h"
-#include "src/VisionSystemCustom/VisionSystemClient.hpp"
-
+#include "../MovementCustom/Movement.h"
 class Navigation {
     public:
         // Struct to hold sensor readings
@@ -20,7 +18,7 @@ class Navigation {
         double objectWidth;
         bool objectDetected;
         };
-        Navigation(IMovement& movementController, VisionSystemClient& Enes100); // Constructor
+        Navigation(Movement& movementController, VisionSystemClient& Enes100); // Constructor
         // Main Navigation Functions
         int pylonSearch(int position[]); // Determine starting position and navigate to pylon position
         int pylonHoming(int position[]); // Measure and home in on pylon

@@ -1,9 +1,10 @@
 #ifndef GITHUB_RUNNER
 // If running locally, use the following includes for src libraries
 #include "src/ParamsCustom/params.h"
-#include "src/ParamsCustom/pinLayout.h"
-#include "src/MovementCustom/Movement.h"
-#include "src/NavigationCustom/Navigation.h"
+//#include "src/ParamsCustom/pinLayout.h"
+//#include "src/MovementCustom/Movement.h"
+#include "src/VisionSystemCustom/VisionSystemClient.hpp"
+//#include "src/NavigationCustom/Navigation.h"
 #else
 // If running in Github Actions, use the following includes
 #include <params.h>
@@ -14,15 +15,25 @@
 
 
 VisionSystemClient Enes100;
-Movement movement(Enes100); // Initialize Movement Pins and Variables
-Navigation navigation(movement, Enes100);
-
+//Movement movement(Enes100); // Initialize Movement Pins and Variables
+//Navigation navigation(movement, Enes100);
+int mode;
 void setup() {
     //Serial.begin(9600); // Start communications
-    Serial.println("Starting movement tests");
+    mode = MODE_PYLON;
 }
 
 void loop() {
+    switch(mode)
+    {
+    case MODE_PYLON:
+        break;
+
+    default:
+        exit(0);
+    };
+    
+
     // Test the movement functions
     // Serial.println("Testing forward motion");
     // movement.forward();

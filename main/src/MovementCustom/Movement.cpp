@@ -1,8 +1,4 @@
-#include "Arduino.h"
 #include "Movement.h"
-#include "../ParamsCustom/pinLayout.h"
-#include "../ParamsCustom/params.h"
-
 
 Movement::Movement(VisionSystemClient& Enes100)
 {
@@ -92,7 +88,7 @@ void Movement::turn(int angle, int overrideAngle) {
     }
     else
         delay(turnDuration); // turn for a time proportional to the angle
-        
+
     stop();
 }
 

@@ -25,6 +25,7 @@
 #define BUFFER_ANGLE 20
 
 // Filler values for determining mode switch boundaries from OVS query
+enum {MODE_PYLON, MODE_OBSTACLES, MODE_ENDZONE}
 #define MODE_ONE_X 100 // centimeters
 #define MODE_ONE_Y 100 // centimeters
 #define MODE_TWO_X 350 // centimeters
