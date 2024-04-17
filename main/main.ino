@@ -15,70 +15,106 @@
 #include <Movement.h>
 #include <Payload.h>
 #endif
+#include <Servo.h>
 
 
 
 
 Movement movement; // Initialize Movement Pins and Variables
 Navigation nav(movement); // Initialize Navigation Pins and Variables
-Payload payload; // Initialize Payload Pins and Variables
+Payload payload(movement); // Initialize Payload Pins and Variables
 VisionSystemClient Enes100; // Initialize Enes100 Vision System
+int magnet = R1;
 
 void setup() {
-    Serial.begin(9600); // Start communications
+    //Serial.begin(9600); // Start communications
     // Initialize Enes100 Library
     Enes100.begin("B-Team", DATA, 697, 9, 8);
-    delay(1000); // Wait for Enes100 to initialize (1 second delay)
-    Serial.println("Vision System initialized");
+    delay(2000); // Wait for Enes100 to initialize (1 second delay)
+    //Serial.println("Vision System initialized");
+    Servo myservo;  // create servo object to control a servo
+    int pos = 0;    // variable to store the servo position
+   // int duty_cycle = #
+   // pinMode(duty_cycle, INPUT);
+    myservo.attach(PAYLOAD);  // attaches the servo on pin 9 to the servo object (idk where this is supposed to)
+    pinMode(magnet,INPUT);
+    pinMode(C1, INPUT);
+
 }
 
 void loop() {
-    int foundPylon, isVisible, readyPayload;
-    int x, y;
-
-   // Get position from Enes100 Vision System
-    x = Enes100.getX();
-    y = Enes100.getY();
-    isVisible = Enes100.isVisible();
-
-    if (!isVisible) {
-        Serial.println("Marker not visible");
-        return;
-    }
-
-    Serial.print("Current position: X=");
-    Serial.print(x);
-    Serial.print(" Y=");
-    Serial.println(y);
-
-    int position[3] = {static_cast<int>(x * 100), static_cast<int>(y * 100), 0}; // Convert meters to centimeters, assuming az is 0 for simplicity
-
-
-    // Determine if finding Payload or Avoiding Obstacles
-    if (position[0] < MODE_ONE_X && position[1] < MODE_ONE_Y) 
+    payload.deployPayload();
+    Enes100.print("OTV is backing up");
+    payload.shuffle();
+    int i = payload.getCycle();
+    Enes100.mission(CYCLE, i);
+    if(magnet==LOW)
     {
-        if (foundPylon == 0) {
-            foundPylon = nav.pylonSearch(position); // Object width measurement
-
-        }
-        if (foundPylon == 1) {
-            readyPayload = nav.pylonHoming(position); // Specific navigation to pylon and orientation for data extraction deployment
-        }
-    } 
-    else if ((position[0] > MODE_ONE_X && position[1] > MODE_ONE_Y) &&
-                (position[0] < MODE_TWO_X && position[1] < MODE_TWO_Y)) 
-    { 
-        int goalzone[3] = {GOALZONE_X, GOALZONE_Y, 0};
-        nav.obstacleAvoidance(position, goalzone); // Avoid obstacles to navigate to target position
-    } else {
-        Serial.print("There was an error in the position: ");
-        for (int i = 0; i < 3; i++) {
-            Serial.print("position[");
-            Serial.print(i);
-            Serial.print("]: ");
-            Serial.println(position[i]);
-        }
-        delay(1000);
-        return;
+        Enes100.mission(MAGNETISM, NOT_MAGNETIC);
     }
+    else(magnet==HIGH);
+    {
+        Enes100.mission(MAGNETISM,MAGNETIC);
+    }
+
+    payload.collectPayload();
+    
+
+    
+//     int foundPylon, isVisible, readyPayload;
+//     int x, y;
+
+//    // Get position from Enes100 Vision System
+//     x = Enes100.getX();
+//     y = Enes100.getY();
+//     isVisible = Enes100.isVisible();
+
+//     if (!isVisible) {
+//         Serial.println("Marker not visible");
+//         return;
+//     }
+
+//     Serial.print("Current position: X=");
+//     Serial.print(x);
+//     Serial.print(" Y=");
+//     Serial.println(y);
+
+//     int position[3] = {static_cast<int>(x * 100), static_cast<int>(y * 100), 0}; // Convert meters to centimeters, assuming az is 0 for simplicity
+
+
+//     // Determine if finding Payload or Avoiding Obstacles
+//     if (position[0] < MODE_ONE_X && position[1] < MODE_ONE_Y) 
+//     {
+//         if (foundPylon == 0) {
+//             foundPylon = nav.pylonSearch(position); // Object width measurement
+
+//         }
+//         if (foundPylon == 1) {
+//             readyPayload = nav.pylonHoming(position); // Specific navigation to pylon and orientation for data extraction deployment
+//         }
+//     } 
+//     else if ((position[0] > MODE_ONE_X && position[1] > MODE_ONE_Y) &&
+//                 (position[0] < MODE_TWO_X && position[1] < MODE_TWO_Y)) 
+//     { 
+//         int goalzone[3] = {GOALZONE_X, GOALZONE_Y, 0};
+//         nav.obstacleAvoidance(position, goalzone); // Avoid obstacles to navigate to target position
+//     } else {
+//         Serial.print("There was an error in the position: ");
+//         for (int i = 0; i < 3; i++) {
+//             Serial.print("position[");
+//             Serial.print(i);
+//             Serial.print("]: ");
+//             Serial.println(position[i]);
+//         }
+//         delay(1000);
+//         return;
+//     }
+
+
+
+
+
+
+
+
 }
